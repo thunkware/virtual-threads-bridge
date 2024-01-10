@@ -25,9 +25,9 @@ class ThreadFactoryBuilders21Test {
     };
 
     ThreadFactory factory = ThreadFactoryBuilders.ofVirtual()
-        // .name("name")
-        // .inheritInheritableThreadLocals(true)
-        // .uncaughtExceptionHandler(ueh)
+        .name("name")
+        .inheritInheritableThreadLocals(true)
+        .uncaughtExceptionHandler(ueh)
         .factory();
 
     assertThat(factory).isNotNull();
@@ -36,8 +36,8 @@ class ThreadFactoryBuilders21Test {
 
     });
 
-    // assertThat(thread.getName()).isEqualTo("name");
-    // assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
+    assertThat(thread.getName()).isEqualTo("name");
+    assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
 
     assertThat(ThreadTool.isVirtual(thread)).isTrue();
   }

@@ -40,7 +40,13 @@ public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
 
     private static final MethodHandle ofVirtual;
 
-    // private static final MethodHandle name;
+    private static final MethodHandle name;
+
+    private static final MethodHandle nameWithCounter;
+
+    private static final MethodHandle inheritInheritableThreadLocals;
+
+    private static final MethodHandle uncaughtExceptionHandler;
 
     private static final MethodHandle factory;
 
@@ -48,52 +54,77 @@ public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
 
       final Lookup publicLookup = MethodHandles.publicLookup();
 
+      final Class<?> ofVirtualClass = invoke(() -> Class.forName("java.lang.Thread$Builder$OfVirtual"));
+
       ofVirtual = invoke(() -> {
-        final Class<?> ofVirtualClass = Class.forName("java.lang.Thread$Builder$OfVirtual");
         final MethodType methodType = MethodType.methodType(ofVirtualClass);
         return publicLookup.findStatic(Thread.class, "ofVirtual", methodType);
       });
 
-      // name = invoke(() -> {
-      //
-      // final Class<?> ofVirtualClass = Class.forName("java.lang.Thread$Builder$OfVirtual");
-      //
-      // return publicLookup.findGetter(ofVirtualClass, "name", String.class);
-      // });
+      name = invoke(() -> {
+        final MethodType methodType = MethodType.methodType(ofVirtualClass, String.class);
+        return publicLookup.findVirtual(ofVirtualClass, "name", methodType);
+      });
+
+      nameWithCounter = invoke(() -> {
+        final MethodType methodType = MethodType.methodType(ofVirtualClass, String.class, long.class);
+        return publicLookup.findVirtual(ofVirtualClass, "name", methodType);
+      });
+
+      inheritInheritableThreadLocals = invoke(() -> {
+        final MethodType methodType = MethodType.methodType(ofVirtualClass, boolean.class);
+        return publicLookup.findVirtual(ofVirtualClass, "inheritInheritableThreadLocals", methodType);
+      });
+
+      uncaughtExceptionHandler = invoke(() -> {
+        final MethodType methodType = MethodType.methodType(ofVirtualClass, UncaughtExceptionHandler.class);
+        return publicLookup.findVirtual(ofVirtualClass, "uncaughtExceptionHandler", methodType);
+      });
 
       factory = invoke(() -> {
-        final Class<?> ofVirtualClass = Class.forName("java.lang.Thread$Builder$OfVirtual");
         final MethodType methodType = MethodType.methodType(ThreadFactory.class);
         return publicLookup.findVirtual(ofVirtualClass, "factory", methodType);
       });
+
     }
 
-    private final Object builder;
+    private Object builder;
 
     VirtualThreadFactoryBuilder21() {
       builder = ThreadFactoryBuilder21.invoke(ofVirtual::invoke);
     }
 
     @Override
-    public VirtualThreadFactoryBuilder name(String name) {
-      throw new UnsupportedOperationException("Not implemented yet");
+    public VirtualThreadFactoryBuilder name(String nameStr) {
+      builder = ThreadFactoryBuilder21.invoke(() -> name.invoke(builder, nameStr));
+
+      return this;
+    }
+
+    @Override
+    public VirtualThreadFactoryBuilder name(String prefix, long start) {
+      builder = ThreadFactoryBuilder21.invoke(() -> nameWithCounter.invoke(builder, prefix, start));
+
+      return this;
     }
 
     @Override
     public VirtualThreadFactoryBuilder inheritInheritableThreadLocals(boolean inherit) {
-      throw new UnsupportedOperationException("Not implemented yet");
+      builder = ThreadFactoryBuilder21.invoke(() -> inheritInheritableThreadLocals.invoke(builder, inherit));
+
+      return this;
     }
 
     @Override
     public VirtualThreadFactoryBuilder uncaughtExceptionHandler(UncaughtExceptionHandler ueh) {
-      throw new UnsupportedOperationException("Not implemented yet");
+      builder = ThreadFactoryBuilder21.invoke(() -> uncaughtExceptionHandler.invoke(builder, ueh));
+
+      return this;
     }
 
     @Override
     public ThreadFactory factory() {
-      return ThreadFactoryBuilder21.invoke(() -> {
-        return (ThreadFactory) factory.invoke(builder);
-      });
+      return ThreadFactoryBuilder21.invoke(() -> (ThreadFactory) factory.invoke(builder));
     }
 
   }
@@ -102,6 +133,11 @@ public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
 
     @Override
     public PlatformThreadFactoryBuilder name(String name) {
+      throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public PlatformThreadFactoryBuilder name(String prefix, long start) {
       throw new UnsupportedOperationException("Not implemented yet");
     }
 

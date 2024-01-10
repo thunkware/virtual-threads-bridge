@@ -46,7 +46,32 @@ public class ThreadFactoryBuilders {
 
   interface BaseThreadFactoryBuilder<S extends BaseThreadFactoryBuilder<S>> {
 
+    /**
+     * Sets the thread name.
+     * 
+     * @param name thread name
+     * @return this builder
+     */
     S name(String name);
+
+    /**
+     * Sets the thread name to be the concatenation of a string prefix and the string representation of a counter value. The counter's
+     * initial value is {@code start}. It is incremented after a {@code Thread} is created with this builder so that the next thread is
+     * named with the new counter value. A {@code ThreadFactory} created with this builder is seeded with the current value of the counter.
+     * The {@code
+     * ThreadFactory} increments its copy of the counter after {@link ThreadFactory#newThread(Runnable) newThread} is used to create a
+     * {@code Thread}.
+     *
+     * @apiNote The following example creates a builder that is invoked twice to start two threads named "{@code worker-0}" and
+     *          "{@code worker-1}". {@snippet : Thread.Builder builder = Thread.ofPlatform().name("worker-", 0); Thread t1 =
+     *          builder.start(task1); // name "worker-0" Thread t2 = builder.start(task2); // name "worker-1" }
+     *
+     * @param prefix thread name prefix
+     * @param start the starting value of the counter
+     * @return this builder
+     * @throws IllegalArgumentException if start is negative
+     */
+    S name(String prefix, long start);
 
     /**
      * Sets whether the thread inherits the initial values of {@linkplain InheritableThreadLocal inheritable-thread-local} variables from
