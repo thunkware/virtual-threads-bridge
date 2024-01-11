@@ -36,10 +36,11 @@ class ThreadFactoryTool21Test {
 
     });
 
+    assertThat(ThreadTool.isVirtual(thread)).isTrue();
+
     assertThat(thread.getName()).isEqualTo("name");
     assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
 
-    assertThat(ThreadTool.isVirtual(thread)).isTrue();
   }
 
   @Test
@@ -66,13 +67,13 @@ class ThreadFactoryTool21Test {
 
     });
 
+    assertThat(ThreadTool.isVirtual(thread)).isFalse();
+
     assertThat(thread.getName()).isEqualTo("name");
     assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
-    assertThat(ThreadTool.isVirtual(thread)).isFalse();
     assertThat(thread.getThreadGroup()).isSameAs(group);
     assertThat(thread.isDaemon()).isTrue();
     assertThat(thread.getPriority()).isEqualTo(8);
-
   }
 
 }
