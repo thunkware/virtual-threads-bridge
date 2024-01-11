@@ -22,9 +22,7 @@ class ThreadFactoryBuilder8Test {
 
   @Test
   void testOfPlatform() {
-
     assertThatThrownBy(() -> ThreadTool.ofVirtual()).isInstanceOf(UnsupportedOperationException.class);
-
   }
 
 }
