@@ -48,10 +48,16 @@ class ThreadFactoryBuilders21Test {
     UncaughtExceptionHandler ueh = (t, e) -> {
     };
 
+    ThreadGroup group = new ThreadGroup("my-group");
+
     ThreadFactory factory = ThreadFactoryBuilders.ofPlatform()
         .name("name")
         .inheritInheritableThreadLocals(true)
         .uncaughtExceptionHandler(ueh)
+        .group(group)
+        .daemon(true)
+        .priority(8)
+        .stackSize(3)
         .factory();
 
     assertThat(factory).isNotNull();
@@ -62,8 +68,10 @@ class ThreadFactoryBuilders21Test {
 
     assertThat(thread.getName()).isEqualTo("name");
     assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
-
     assertThat(ThreadTool.isVirtual(thread)).isFalse();
+    assertThat(thread.getThreadGroup()).isSameAs(group);
+    assertThat(thread.isDaemon()).isTrue();
+    assertThat(thread.getPriority()).isEqualTo(8);
 
   }
 
