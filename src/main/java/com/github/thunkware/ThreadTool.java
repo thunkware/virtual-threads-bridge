@@ -1,10 +1,6 @@
 package com.github.thunkware;
 
-import static com.github.thunkware.ThreadFactoryBuilder.ThreadFactoryBuilderFactory.threadFactoryBuilder;
 import static com.github.thunkware.ThreadProvider.ThreadProviderFactory.threadProvider;
-
-import com.github.thunkware.ThreadFactoryBuilder.PlatformThreadFactoryBuilder;
-import com.github.thunkware.ThreadFactoryBuilder.VirtualThreadFactoryBuilder;
 
 /**
  * Utility for working with Threads API from Java 21 in Java 8+ 
@@ -62,28 +58,6 @@ public class ThreadTool {
      */
     public static Thread unstartedVirtualThread(Runnable task) {
         return threadProvider.unstartedVirtualThread(task);
-    }
-    
-    /**
-     * On Java 8+, throws an UnsupportedOperationExcption
-     * <p>
-     * On Java 21+, creates a new VirtualThreadFactoryBuilder
-     * 
-     * @return a new VirtualThreadFactoryBuilder
-     */
-    public static VirtualThreadFactoryBuilder ofVirtual() {
-	return threadFactoryBuilder.ofVirtual();
-    }
-
-    /**
-     * On Java 8+, throws an UnsupportedOperationExcption
-     * <p>
-     * On Java 21+, creates a new PlatformThreadFactoryBuilder
-     * 
-     * @return a new VirtualThreadFactoryBuilder
-     */
-    public static PlatformThreadFactoryBuilder ofPlatform() {
-	return threadFactoryBuilder.ofPlatform();
     }
 
     private ThreadTool() {

@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ThreadFactoryBuilder8Test {
+class ThreadFactoryTool8Test {
 
   @BeforeEach
   void setUp() {
@@ -17,12 +17,12 @@ class ThreadFactoryBuilder8Test {
 
   @Test
   void testOfVirtual() {
-    assertThatThrownBy(() -> ThreadTool.ofVirtual()).isInstanceOf(UnsupportedOperationException.class);
+    assertThatThrownBy(() -> ThreadFactoryTool.ofVirtual()).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
   void testOfPlatform() {
-    assertThatThrownBy(() -> ThreadTool.ofVirtual()).isInstanceOf(UnsupportedOperationException.class);
+    assertThatThrownBy(() -> ThreadFactoryTool.ofVirtual()).isInstanceOf(UnsupportedOperationException.class);
   }
 
 }
