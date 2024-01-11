@@ -1,9 +1,10 @@
 package com.github.thunkware;
 
-import static com.github.thunkware.ThreadFactoryBuilder.ThreadFactoryBuilderFactory.threadFactoryBuilder;
 
-import com.github.thunkware.ThreadFactoryBuilder.PlatformThreadFactoryBuilder;
-import com.github.thunkware.ThreadFactoryBuilder.VirtualThreadFactoryBuilder;
+import static com.github.thunkware.ThreadFactoryBuilderProvider.ThreadFactoryBuilderFactory.threadFactoryBuilderProvider;
+
+import com.github.thunkware.ThreadFactoryBuilderProvider.PlatformThreadFactoryBuilder;
+import com.github.thunkware.ThreadFactoryBuilderProvider.VirtualThreadFactoryBuilder;
 
 /**
  * Utility for working with Thread Factory API from Java 21 in Java 8+
@@ -16,7 +17,7 @@ public class ThreadFactoryTool {
    * @return a new VirtualThreadFactoryBuilder
    */
   public static VirtualThreadFactoryBuilder ofVirtual() {
-    return threadFactoryBuilder.ofVirtual();
+    return threadFactoryBuilderProvider.ofVirtual();
   }
 
   /**
@@ -25,7 +26,7 @@ public class ThreadFactoryTool {
    * @return a new VirtualThreadFactoryBuilder
    */
   public static PlatformThreadFactoryBuilder ofPlatform() {
-    return threadFactoryBuilder.ofPlatform();
+    return threadFactoryBuilderProvider.ofPlatform();
   }
 
   private ThreadFactoryTool() {

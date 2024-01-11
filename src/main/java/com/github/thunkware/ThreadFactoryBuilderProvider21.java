@@ -8,7 +8,10 @@ import java.lang.invoke.MethodType;
 import java.util.concurrent.ThreadFactory;
 
 
-public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
+/**
+ * {@link ThreadFactoryBuilderProvider} to create ThreadFactoryBuilder with Java 21+
+ */
+public class ThreadFactoryBuilderProvider21 implements ThreadFactoryBuilderProvider {
 
   @Override
   public VirtualThreadFactoryBuilder ofVirtual() {
@@ -33,6 +36,9 @@ public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
     V call() throws Throwable;
   }
 
+  /**
+   * {@link VirtualThreadFactoryBuilder } for Java 21+
+   */
   static class VirtualThreadFactoryBuilder21 implements VirtualThreadFactoryBuilder {
 
     private static final MethodHandle ofVirtual;
@@ -88,40 +94,43 @@ public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
     private Object builder;
 
     VirtualThreadFactoryBuilder21() {
-      builder = ThreadFactoryBuilder21.invoke(ofVirtual::invoke);
+      builder = ThreadFactoryBuilderProvider21.invoke(ofVirtual::invoke);
     }
 
     @Override
     public VirtualThreadFactoryBuilder21 name(String nameStr) {
-      builder = ThreadFactoryBuilder21.invoke(() -> name.invoke(builder, nameStr));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> name.invoke(builder, nameStr));
       return this;
     }
 
     @Override
     public VirtualThreadFactoryBuilder21 name(String prefix, long start) {
-      builder = ThreadFactoryBuilder21.invoke(() -> nameWithCounter.invoke(builder, prefix, start));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> nameWithCounter.invoke(builder, prefix, start));
       return this;
     }
 
     @Override
     public VirtualThreadFactoryBuilder21 inheritInheritableThreadLocals(boolean inherit) {
-      builder = ThreadFactoryBuilder21.invoke(() -> inheritInheritableThreadLocals.invoke(builder, inherit));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> inheritInheritableThreadLocals.invoke(builder, inherit));
       return this;
     }
 
     @Override
     public VirtualThreadFactoryBuilder21 uncaughtExceptionHandler(UncaughtExceptionHandler ueh) {
-      builder = ThreadFactoryBuilder21.invoke(() -> uncaughtExceptionHandler.invoke(builder, ueh));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> uncaughtExceptionHandler.invoke(builder, ueh));
       return this;
     }
 
     @Override
     public ThreadFactory factory() {
-      return ThreadFactoryBuilder21.invoke(() -> (ThreadFactory) factory.invoke(builder));
+      return ThreadFactoryBuilderProvider21.invoke(() -> (ThreadFactory) factory.invoke(builder));
     }
 
   }
 
+  /**
+   * {@link PlatformThreadFactoryBuilder } for Java 21+
+   */
   static class PlatformThreadFactoryBuilder21 implements PlatformThreadFactoryBuilder {
 
     private static final MethodHandle ofPlatform;
@@ -205,60 +214,60 @@ public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
     private Object builder;
 
     PlatformThreadFactoryBuilder21() {
-      builder = ThreadFactoryBuilder21.invoke(ofPlatform::invoke);
+      builder = ThreadFactoryBuilderProvider21.invoke(ofPlatform::invoke);
     }
 
     @Override
     public PlatformThreadFactoryBuilder name(String nameStr) {
-      builder = ThreadFactoryBuilder21.invoke(() -> name.invoke(builder, nameStr));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> name.invoke(builder, nameStr));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 name(String prefix, long start) {
-      builder = ThreadFactoryBuilder21.invoke(() -> nameWithCounter.invoke(builder, prefix, start));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> nameWithCounter.invoke(builder, prefix, start));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 inheritInheritableThreadLocals(boolean inherit) {
-      builder = ThreadFactoryBuilder21.invoke(() -> inheritInheritableThreadLocals.invoke(builder, inherit));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> inheritInheritableThreadLocals.invoke(builder, inherit));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 uncaughtExceptionHandler(UncaughtExceptionHandler ueh) {
-      builder = ThreadFactoryBuilder21.invoke(() -> uncaughtExceptionHandler.invoke(builder, ueh));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> uncaughtExceptionHandler.invoke(builder, ueh));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 group(ThreadGroup group) {
-      builder = ThreadFactoryBuilder21.invoke(() -> threadGroup.invoke(builder, group));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> threadGroup.invoke(builder, group));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 daemon(boolean on) {
-      builder = ThreadFactoryBuilder21.invoke(() -> daemon.invoke(builder, on));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> daemon.invoke(builder, on));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 priority(int priorityint) {
-      builder = ThreadFactoryBuilder21.invoke(() -> priority.invoke(builder, priorityint));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> priority.invoke(builder, priorityint));
       return this;
     }
 
     @Override
     public PlatformThreadFactoryBuilder21 stackSize(long stackSizeArg) {
-      builder = ThreadFactoryBuilder21.invoke(() -> stackSize.invoke(builder, stackSizeArg));
+      builder = ThreadFactoryBuilderProvider21.invoke(() -> stackSize.invoke(builder, stackSizeArg));
       return this;
     }
 
     @Override
     public ThreadFactory factory() {
-      return ThreadFactoryBuilder21.invoke(() -> (ThreadFactory) factory.invoke(builder));
+      return ThreadFactoryBuilderProvider21.invoke(() -> (ThreadFactory) factory.invoke(builder));
     }
 
   }

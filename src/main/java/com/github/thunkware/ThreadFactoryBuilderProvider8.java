@@ -1,7 +1,7 @@
 package com.github.thunkware;
 
 
-public class ThreadFactoryBuilder8 implements ThreadFactoryBuilder {
+public class ThreadFactoryBuilderProvider8 implements ThreadFactoryBuilderProvider {
 
   @Override
   public VirtualThreadFactoryBuilder ofVirtual() {

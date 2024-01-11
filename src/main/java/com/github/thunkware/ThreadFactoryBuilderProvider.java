@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * Defines static methods to create platform and virtual thread factories builders.
  */
-public interface ThreadFactoryBuilder {
+public interface ThreadFactoryBuilderProvider {
 
   /**
    * Creates a new VirtualThreadFactoryBuilder
@@ -22,6 +22,11 @@ public interface ThreadFactoryBuilder {
    */
   PlatformThreadFactoryBuilder ofPlatform();
 
+  /**
+   * Recursive base interface with common methods for ThreadFactoryBuilders.
+   * 
+   * @param <S> the recursive param
+   */
   interface BaseThreadFactoryBuilder<S extends BaseThreadFactoryBuilder<S>> {
 
     /**
@@ -77,10 +82,16 @@ public interface ThreadFactoryBuilder {
 
   }
 
+  /**
+   * Builder to create Virtual Threads Factories
+   */
   interface VirtualThreadFactoryBuilder extends BaseThreadFactoryBuilder<VirtualThreadFactoryBuilder> {
 
   }
 
+  /**
+   * Builder to create PlatformThreads Factories
+   */
   interface PlatformThreadFactoryBuilder extends BaseThreadFactoryBuilder<PlatformThreadFactoryBuilder> {
 
     /**
@@ -135,7 +146,7 @@ public interface ThreadFactoryBuilder {
   }
 
   static class ThreadFactoryBuilderFactory {
-    static final ThreadFactoryBuilder threadFactoryBuilder;
+    static final ThreadFactoryBuilderProvider threadFactoryBuilderProvider;
 
     static {
       boolean isJava21;
@@ -146,7 +157,7 @@ public interface ThreadFactoryBuilder {
         isJava21 = false;
       }
 
-      threadFactoryBuilder = isJava21 ? new ThreadFactoryBuilder21() : new ThreadFactoryBuilder8();
+      threadFactoryBuilderProvider = isJava21 ? new ThreadFactoryBuilderProvider21() : new ThreadFactoryBuilderProvider8();
     }
 
     private ThreadFactoryBuilderFactory() {
