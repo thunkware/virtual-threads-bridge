@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ThreadFactoryBuilders21Test {
+class ThreadFactoryBuilder21Test {
 
   @BeforeEach
   void setUp() {
@@ -24,7 +24,7 @@ class ThreadFactoryBuilders21Test {
     UncaughtExceptionHandler ueh = (t, e) -> {
     };
 
-    ThreadFactory factory = ThreadFactoryBuilders.ofVirtual()
+    ThreadFactory factory = ThreadTool.ofVirtual()
         .name("name")
         .inheritInheritableThreadLocals(true)
         .uncaughtExceptionHandler(ueh)
@@ -50,7 +50,7 @@ class ThreadFactoryBuilders21Test {
 
     ThreadGroup group = new ThreadGroup("my-group");
 
-    ThreadFactory factory = ThreadFactoryBuilders.ofPlatform()
+    ThreadFactory factory = ThreadTool.ofPlatform()
         .name("name")
         .inheritInheritableThreadLocals(true)
         .uncaughtExceptionHandler(ueh)

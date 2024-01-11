@@ -7,9 +7,6 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
 import java.util.concurrent.ThreadFactory;
 
-import com.github.thunkware.ThreadFactoryBuilders.PlatformThreadFactoryBuilder;
-import com.github.thunkware.ThreadFactoryBuilders.ThreadFactoryBuilder;
-import com.github.thunkware.ThreadFactoryBuilders.VirtualThreadFactoryBuilder;
 
 public class ThreadFactoryBuilder21 implements ThreadFactoryBuilder {
 

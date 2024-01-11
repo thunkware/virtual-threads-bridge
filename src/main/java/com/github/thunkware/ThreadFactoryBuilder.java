@@ -6,43 +6,21 @@ import java.util.concurrent.ThreadFactory;
 /**
  * Defines static methods to create platform and virtual thread factories builders.
  */
-public class ThreadFactoryBuilders {
-
-  private ThreadFactoryBuilders() {
-
-  }
+public interface ThreadFactoryBuilder {
 
   /**
-   * Creates a Thread Factory builder for virtual threads
+   * Creates a new VirtualThreadFactoryBuilder
+   * 
+   * @return new instance of VirtualThreadFactoryBuilder
    */
-  public static VirtualThreadFactoryBuilder ofVirtual() {
-    return ThreadFactoryBuilderFactory.threadFactoryBuilder.ofVirtual();
-  }
+  VirtualThreadFactoryBuilder ofVirtual();
 
   /**
-   * Creates a Thread Factory builder for platform threads
+   * Creates a new instance of PlatformThreadFactoryBuilder
+   * 
+   * @return new instance of PlatformThreadFactoryBuilder
    */
-  public static PlatformThreadFactoryBuilder ofPlatform() {
-    return ThreadFactoryBuilderFactory.threadFactoryBuilder.ofPlatform();
-  }
-
-  interface ThreadFactoryBuilder {
-
-    /**
-     * Creates a new VirtualThreadFactoryBuilder
-     * 
-     * @return new instance of VirtualThreadFactoryBuilder
-     */
-    VirtualThreadFactoryBuilder ofVirtual();
-
-    /**
-     * Creates a new instance of PlatformThreadFactoryBuilder
-     * 
-     * @return new instance of PlatformThreadFactoryBuilder
-     */
-    PlatformThreadFactoryBuilder ofPlatform();
-
-  }
+  PlatformThreadFactoryBuilder ofPlatform();
 
   interface BaseThreadFactoryBuilder<S extends BaseThreadFactoryBuilder<S>> {
 
