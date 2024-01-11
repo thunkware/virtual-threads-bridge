@@ -23,7 +23,7 @@ public class ThreadFactoryTool {
   /**
    * On Java 8+, throws an UnsupportedOperationExcption <p> On Java 21+, creates a new PlatformThreadFactoryBuilder
    * 
-   * @return a new VirtualThreadFactoryBuilder
+   * @return a new PlatformThreadFactoryBuilder
    */
   public static PlatformThreadFactoryBuilder ofPlatform() {
     return threadFactoryBuilderProvider.ofPlatform();
