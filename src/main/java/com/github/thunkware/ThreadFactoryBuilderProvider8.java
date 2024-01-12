@@ -13,11 +13,6 @@ public class ThreadFactoryBuilderProvider8 implements ThreadFactoryBuilderProvid
     return new VirtualThreadFactoryBuilder8();
   }
 
-  @Override
-  public PlatformThreadFactoryBuilder ofPlatform() {
-    return new PlatformThreadFactoryBuilder8();
-  }
-
   /**
    * {@link VirtualThreadFactoryBuilder } for Java 8+
    */
@@ -56,7 +51,6 @@ public class ThreadFactoryBuilderProvider8 implements ThreadFactoryBuilderProvid
 
     @Override
     public ThreadFactory factory() {
-
       return new Java8VirtualThreadInternalThreadFactory(this.name, this.start, this.uncaughtExceptionHandler);
     }
     
@@ -76,6 +70,7 @@ public class ThreadFactoryBuilderProvider8 implements ThreadFactoryBuilderProvid
 
       @Override
       public Thread newThread(Runnable r) {
+        
         Thread thread = new Thread(r);
         thread.setDaemon(true);
 
@@ -100,63 +95,4 @@ public class ThreadFactoryBuilderProvider8 implements ThreadFactoryBuilderProvid
     }
 
   }
-
-  private static class PlatformThreadFactoryBuilder8 implements PlatformThreadFactoryBuilder {
-
-    @Override
-    public PlatformThreadFactoryBuilder name(String name) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder name(String prefix, long start) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder inheritInheritableThreadLocals(boolean inherit) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder uncaughtExceptionHandler(UncaughtExceptionHandler ueh) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public ThreadFactory factory() {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder group(ThreadGroup group) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder daemon(boolean on) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder priority(int priority) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public PlatformThreadFactoryBuilder stackSize(long stackSize) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-  }
-
 }

@@ -4,7 +4,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Defines static methods to create platform and virtual thread factories builders.
+ * Defines static methods to create virtual thread factories builders.
  */
 public interface ThreadFactoryBuilderProvider {
 
@@ -16,18 +16,9 @@ public interface ThreadFactoryBuilderProvider {
   VirtualThreadFactoryBuilder ofVirtual();
 
   /**
-   * Creates a new instance of PlatformThreadFactoryBuilder
-   * 
-   * @return new instance of PlatformThreadFactoryBuilder
+   * Builder to create Virtual Threads Factories
    */
-  PlatformThreadFactoryBuilder ofPlatform();
-
-  /**
-   * Recursive base interface with common methods for ThreadFactoryBuilders.
-   * 
-   * @param <S> the recursive param
-   */
-  interface BaseThreadFactoryBuilder<S extends BaseThreadFactoryBuilder<S>> {
+  interface VirtualThreadFactoryBuilder {
 
     /**
      * Sets the thread name.
@@ -35,7 +26,7 @@ public interface ThreadFactoryBuilderProvider {
      * @param name thread name
      * @return this builder
      */
-    S name(String name);
+    VirtualThreadFactoryBuilder name(String name);
 
     /**
      * Sets the thread name to be the concatenation of a string prefix and the string representation of a counter value. The counter's
@@ -45,16 +36,12 @@ public interface ThreadFactoryBuilderProvider {
      * ThreadFactory} increments its copy of the counter after {@link ThreadFactory#newThread(Runnable) newThread} is used to create a
      * {@code Thread}.
      *
-     * @apiNote The following example creates a builder that is invoked twice to start two threads named "{@code worker-0}" and
-     *          "{@code worker-1}". {@snippet : Thread.Builder builder = Thread.ofPlatform().name("worker-", 0); Thread t1 =
-     *          builder.start(task1); // name "worker-0" Thread t2 = builder.start(task2); // name "worker-1" }
-     *
      * @param prefix thread name prefix
      * @param start the starting value of the counter
      * @return this builder
      * @throws IllegalArgumentException if start is negative
      */
-    S name(String prefix, long start);
+    VirtualThreadFactoryBuilder name(String prefix, long start);
 
     /**
      * Sets whether the thread inherits the initial values of {@linkplain InheritableThreadLocal inheritable-thread-local} variables from
@@ -63,7 +50,7 @@ public interface ThreadFactoryBuilderProvider {
      * @param inherit {@code true} to inherit, {@code false} to not inherit
      * @return this builder
      */
-    S inheritInheritableThreadLocals(boolean inherit);
+    VirtualThreadFactoryBuilder inheritInheritableThreadLocals(boolean inherit);
 
     /**
      * Sets the uncaught exception handler.
@@ -71,7 +58,7 @@ public interface ThreadFactoryBuilderProvider {
      * @param ueh uncaught exception handler
      * @return this builder
      */
-    S uncaughtExceptionHandler(UncaughtExceptionHandler ueh);
+    VirtualThreadFactoryBuilder uncaughtExceptionHandler(UncaughtExceptionHandler ueh);
 
     /**
      * Creates the new ThreadFactory defined at the builder.
@@ -82,68 +69,6 @@ public interface ThreadFactoryBuilderProvider {
 
   }
 
-  /**
-   * Builder to create Virtual Threads Factories
-   */
-  interface VirtualThreadFactoryBuilder extends BaseThreadFactoryBuilder<VirtualThreadFactoryBuilder> {
-
-  }
-
-  /**
-   * Builder to create PlatformThreads Factories
-   */
-  interface PlatformThreadFactoryBuilder extends BaseThreadFactoryBuilder<PlatformThreadFactoryBuilder> {
-
-    /**
-     * Sets the thread group.
-     * 
-     * @param group the thread group
-     * @return this builder
-     */
-    PlatformThreadFactoryBuilder group(ThreadGroup group);
-
-    /**
-     * Sets the daemon status.
-     * 
-     * @param on {@code true} to create daemon threads
-     * @return this builder
-     */
-    PlatformThreadFactoryBuilder daemon(boolean on);
-
-    /**
-     * Sets the daemon status to {@code true}.
-     * 
-     * @implSpec The default implementation invokes {@linkplain #daemon(boolean)} with a value of {@code true}.
-     * @return this builder
-     */
-    default PlatformThreadFactoryBuilder daemon() {
-      return daemon(true);
-    }
-
-    /**
-     * Sets the thread priority.
-     * 
-     * @param priority priority
-     * @return this builder
-     * @throws IllegalArgumentException if the priority is less than {@link Thread#MIN_PRIORITY} or greater than {@link Thread#MAX_PRIORITY}
-     */
-    PlatformThreadFactoryBuilder priority(int priority);
-
-    /**
-     * Sets the desired stack size.
-     *
-     * <p> The stack size is the approximate number of bytes of address space that the Java virtual machine is to allocate for the thread's
-     * stack. The effect is highly platform dependent and the Java virtual machine is free to treat the {@code stackSize} parameter as a
-     * "suggestion". If the value is unreasonably low for the platform then a platform specific minimum may be used. If the value is
-     * unreasonably high then a platform specific maximum may be used. A value of zero is always ignored.
-     *
-     * @param stackSize the desired stack size
-     * @return this builder
-     * @throws IllegalArgumentException if the stack size is negative
-     */
-    PlatformThreadFactoryBuilder stackSize(long stackSize);
-
-  }
 
   static class ThreadFactoryBuilderFactory {
     static final ThreadFactoryBuilderProvider threadFactoryBuilderProvider;

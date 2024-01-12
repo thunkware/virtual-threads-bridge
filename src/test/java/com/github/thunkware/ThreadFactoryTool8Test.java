@@ -37,39 +37,9 @@ class ThreadFactoryTool8Test {
 
     assertThat(ThreadTool.isVirtual(thread)).isFalse();
     assertThat(thread.getName()).isEqualTo("name-1");
-    assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
-  }
-
-  @Test
-  void testOfPlatform() {
-    UncaughtExceptionHandler ueh = (t, e) -> {
-    };
-
-    ThreadGroup group = new ThreadGroup("my-group");
-
-    ThreadFactory factory = ThreadFactoryTool.ofPlatform()
-        .name("name")
-        .inheritInheritableThreadLocals(true)
-        .uncaughtExceptionHandler(ueh)
-        .group(group)
-        .daemon(true)
-        .priority(8)
-        .stackSize(3)
-        .factory();
-
-    assertThat(factory).isNotNull();
-
-    Thread thread = factory.newThread(() -> {
-
-    });
-
-    assertThat(ThreadTool.isVirtual(thread)).isFalse();
-
-    assertThat(thread.getName()).isEqualTo("name");
-    assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
-    assertThat(thread.getThreadGroup()).isSameAs(group);
     assertThat(thread.isDaemon()).isTrue();
-    assertThat(thread.getPriority()).isEqualTo(8);
+    assertThat(thread.getUncaughtExceptionHandler()).isSameAs(ueh);
   }
+
 
 }

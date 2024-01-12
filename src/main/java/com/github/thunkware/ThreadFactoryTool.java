@@ -3,7 +3,6 @@ package com.github.thunkware;
 
 import static com.github.thunkware.ThreadFactoryBuilderProvider.ThreadFactoryBuilderFactory.threadFactoryBuilderProvider;
 
-import com.github.thunkware.ThreadFactoryBuilderProvider.PlatformThreadFactoryBuilder;
 import com.github.thunkware.ThreadFactoryBuilderProvider.VirtualThreadFactoryBuilder;
 
 /**
@@ -12,21 +11,14 @@ import com.github.thunkware.ThreadFactoryBuilderProvider.VirtualThreadFactoryBui
 public class ThreadFactoryTool {
 
   /**
-   * On Java 8+, throws an UnsupportedOperationExcption <p> On Java 21+, creates a new VirtualThreadFactoryBuilder
+   * Creates a new {@link VirtualThreadFactoryBuilder}. <p> On Java 8+ this builder will create a platform thread factory. <p>On Java 21+
+   * this builder will create a virtual thread factory.
+   * 
    * 
    * @return a new VirtualThreadFactoryBuilder
    */
   public static VirtualThreadFactoryBuilder ofVirtual() {
     return threadFactoryBuilderProvider.ofVirtual();
-  }
-
-  /**
-   * On Java 8+, throws an UnsupportedOperationExcption <p> On Java 21+, creates a new PlatformThreadFactoryBuilder
-   * 
-   * @return a new PlatformThreadFactoryBuilder
-   */
-  public static PlatformThreadFactoryBuilder ofPlatform() {
-    return threadFactoryBuilderProvider.ofPlatform();
   }
 
   private ThreadFactoryTool() {
