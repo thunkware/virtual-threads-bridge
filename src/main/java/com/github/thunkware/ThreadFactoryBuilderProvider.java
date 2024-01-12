@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadFactory;
 public interface ThreadFactoryBuilderProvider {
 
   /**
-   * Creates a new VirtualThreadFactoryBuilder
+   * Creates a new {@link VirtualThreadFactoryBuilder}
    * 
    * @return new instance of VirtualThreadFactoryBuilder
    */
