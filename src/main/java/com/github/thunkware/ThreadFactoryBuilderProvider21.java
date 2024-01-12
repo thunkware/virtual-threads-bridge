@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadFactory;
 
 
 /**
- * {@link ThreadFactoryBuilderProvider} to create ThreadFactoryBuilder with Java 21+
+ * {@link ThreadFactoryBuilderProvider} to create ThreadFactoryBuilder on Java 21+
  */
 public class ThreadFactoryBuilderProvider21 implements ThreadFactoryBuilderProvider {
 
