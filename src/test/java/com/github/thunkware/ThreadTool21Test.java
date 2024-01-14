@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import static org.apache.commons.lang3.JavaVersion.JAVA_20;
@@ -52,5 +53,28 @@ class ThreadTool21Test {
             }
         };
         assertThat(ThreadTool.unstartedVirtualThread(task).isAlive()).isFalse();
+    }
+
+    @Test
+    void testOfPlatform() {
+        ThreadFactory factory = ThreadTool.ofPlatform()
+                .daemon(true)
+                .name("foo")
+                .factory();
+        Thread thread = factory.newThread(Thread::yield);
+        assertThat(thread.isDaemon()).isTrue();
+        assertThat(thread.getName()).isEqualTo("foo");
+        assertThat(ThreadTool.isVirtual(thread)).isFalse();
+    }
+
+    @Test
+    void testOfVirtual() {
+        ThreadFactory factory = ThreadTool.ofVirtual()
+                .name("foo")
+                .factory();
+        Thread thread = factory.newThread(Thread::yield);
+        assertThat(thread.isDaemon()).isTrue();
+        assertThat(thread.getName()).isEqualTo("foo");
+        assertThat(ThreadTool.isVirtual(thread)).isTrue();
     }
 }
