@@ -1,10 +1,10 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import static com.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
+import static io.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
 
 /**
  * Utility for working with Executors API from Java 21 in Java 8+ 

@@ -1,10 +1,10 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
+import static io.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
 
 /**
  * Utility for working with Threads API from Java 21 in Java 8+ 

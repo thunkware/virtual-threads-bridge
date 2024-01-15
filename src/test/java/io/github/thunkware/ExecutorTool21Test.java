@@ -1,4 +1,4 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,27 +15,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
-class ExecutorTool8Test {
+class ExecutorTool21Test {
 
     @BeforeEach
     void setUp() {
-        assumeThat(isJavaVersionAtMost(JAVA_20)).isTrue();
+        assumeThat(isJavaVersionAtMost(JAVA_20)).isFalse();
     }
 
     @Test
     void testNewVirtualThreadPerTaskExecutor() {
-        assertThat(ExecutorTool.hasVirtualThreads()).isFalse();
+        assertThat(ExecutorTool.hasVirtualThreads()).isTrue();
 
         CountDownLatch latch = new CountDownLatch(1);
         ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
-        executor.submit(latch::countDown);
+        executor.submit(() -> {
+            assertThat(ThreadTool.isVirtual()).isTrue();
+            latch.countDown();
+        });
         assertThatNoException().isThrownBy(() -> latch.await(1, TimeUnit.SECONDS));
         assertThat(latch.getCount()).isZero();
     }
 
     @Test
     void testNewVirtualThreadPerTaskExecutorShutdownNow() {
-        assertThat(ExecutorTool.hasVirtualThreads()).isFalse();
+        assertThat(ExecutorTool.hasVirtualThreads()).isTrue();
 
         CountDownLatch latch = new CountDownLatch(1);
         ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
@@ -56,7 +59,7 @@ class ExecutorTool8Test {
 
     @Test
     void testNewVirtualThreadPerTaskExecutorAwait() throws InterruptedException {
-        assertThat(ExecutorTool.hasVirtualThreads()).isFalse();
+        assertThat(ExecutorTool.hasVirtualThreads()).isTrue();
 
         CountDownLatch latch = new CountDownLatch(1);
         ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();

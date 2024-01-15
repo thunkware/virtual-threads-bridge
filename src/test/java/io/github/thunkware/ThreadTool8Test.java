@@ -1,4 +1,4 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
