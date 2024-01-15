@@ -76,8 +76,11 @@ final class ThreadProvider8 implements ThreadProvider {
                 throw new IllegalArgumentException("Executor is shut down");
             }
             Thread thread = threadFactory.newThread(() -> {
-                command.run();
-                threads.remove(Thread.currentThread());
+                try {
+                    command.run();
+                } finally {
+                    threads.remove(Thread.currentThread());
+                }
             });
             threads.add(thread);
             thread.start();
