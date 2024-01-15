@@ -1,5 +1,8 @@
 package com.github.thunkware;
 
+import com.github.thunkware.ThreadTool.Builder.OfPlatform;
+import com.github.thunkware.ThreadTool.Builder.OfVirtual;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +48,16 @@ final class ThreadProvider8 implements ThreadProvider {
             thread.setDaemon(true);
             return thread;
         });
+    }
+
+    @Override
+    public OfPlatform ofPlatform() {
+        return new ThreadBuilders8.PlatformThreadBuilder();
+    }
+
+    @Override
+    public OfVirtual ofVirtual() {
+        return new ThreadBuilders8.VirtualThreadBuilder();
     }
 
     private static class ThreadPerTaskExecutor extends AbstractExecutorService implements ExecutorService {

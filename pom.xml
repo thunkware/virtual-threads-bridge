@@ -165,6 +165,13 @@
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                     <argLine>-Xmx1024m -Xms128m ${argLine}</argLine>
                     <runOrder>alphabetical</runOrder>
+                    <!-- https://issues.apache.org/jira/browse/SUREFIRE-1731 -->
+                    <!-- Unable to test Multi Release Jar with surefire or failsafe -->
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>
+                            ${project.build.directory}/classes/META-INF/versions/21
+                        </additionalClasspathElement>
+                    </additionalClasspathElements>
                 </configuration>
             </plugin>
 
@@ -312,25 +319,114 @@
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
             </plugin>
-
-            <!-- Compile code for 1.8 JVMs -->
-            <!-- https://maven.apache.org/plugins/maven-compiler-plugin/index.html -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <parameters>true</parameters>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <showDeprecation>true</showDeprecation>
-                    <compilerArgs>
-                        <arg>-Xlint</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>java21</id>
+            <activation>
+                <jdk>21</jdk>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>compile-java-8</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <source>1.8</source>
+                                    <target>1.8</target>
+                                    <parameters>true</parameters>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                    <showDeprecation>true</showDeprecation>
+                                    <compilerArgs>
+                                        <arg>-Xlint</arg>
+                                    </compilerArgs>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>compile-java-21</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>21</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/main/java21</compileSourceRoot>
+                                    </compileSourceRoots>
+                                    <multiReleaseOutput>true</multiReleaseOutput>
+                                    <parameters>true</parameters>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                    <showDeprecation>true</showDeprecation>
+                                    <compilerArgs>
+                                        <arg>-Xlint</arg>
+                                    </compilerArgs>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>test-java-21</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>testCompile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>21</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/test/java21</compileSourceRoot>
+                                    </compileSourceRoots>
+                                    <parameters>true</parameters>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                    <showDeprecation>true</showDeprecation>
+                                    <compilerArgs>
+                                        <arg>-Xlint</arg>
+                                    </compilerArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>java8</id>
+            <activation>
+                <jdk>[1.8,21)</jdk>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- Compile code for 1.8 JVMs -->
+                    <!--
+                    https://maven.apache.org/plugins/maven-compiler-plugin/index.html -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                            <parameters>true</parameters>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <showDeprecation>true</showDeprecation>
+                            <compilerArgs>
+                                <arg>-Xlint</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

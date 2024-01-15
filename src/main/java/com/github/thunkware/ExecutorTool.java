@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import static com.github.thunkware.ThreadProvider.ThreadProviderFactory.threadProvider;
+import static com.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
 
 /**
  * Utility for working with Executors API from Java 21 in Java 8+ 
@@ -18,7 +18,7 @@ public class ExecutorTool {
      * @return true if the JVM supports virtual threads
      */
     public static final boolean hasVirtualThreads() {
-        return threadProvider.hasVirtualThreads();
+        return getThreadProvider().hasVirtualThreads();
     }
 
     /**
@@ -35,7 +35,7 @@ public class ExecutorTool {
      * @throws NullPointerException if threadFactory is null
      */
     public static ExecutorService newThreadPerTaskExecutor(ThreadFactory threadFactory) {
-        return threadProvider.newThreadPerTaskExecutor(threadFactory);
+        return getThreadProvider().newThreadPerTaskExecutor(threadFactory);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ExecutorTool {
      * @return a new executor that creates a new virtual Thread for each task
      */
     public static ExecutorService newVirtualThreadPerTaskExecutor() {
-        return threadProvider.newVirtualThreadPerTaskExecutor();
+        return getThreadProvider().newVirtualThreadPerTaskExecutor();
     }
 
     /**
@@ -59,7 +59,7 @@ public class ExecutorTool {
      * @return a new executor with limited concurrency
      */
     public static ExecutorService newSempahoreVirtualExecutor(int permits) {
-        ExecutorService executor = threadProvider.newVirtualThreadPerTaskExecutor();
+        ExecutorService executor = getThreadProvider().newVirtualThreadPerTaskExecutor();
         return new SempahoreExecutor(executor, permits);
     }
 
