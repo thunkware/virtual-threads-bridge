@@ -1,4 +1,4 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
 import java.util.Collection;
 import java.util.List;

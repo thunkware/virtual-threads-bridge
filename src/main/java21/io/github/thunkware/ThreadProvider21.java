@@ -1,7 +1,7 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
-import com.github.thunkware.ThreadTool.Builder.OfPlatform;
-import com.github.thunkware.ThreadTool.Builder.OfVirtual;
+import io.github.thunkware.ThreadTool.Builder.OfPlatform;
+import io.github.thunkware.ThreadTool.Builder.OfVirtual;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -1,6 +1,6 @@
-package com.github.thunkware;
+package io.github.thunkware;
 
-import com.github.thunkware.ThreadTool.Builder;
+import io.github.thunkware.ThreadTool.Builder;
 
 import java.lang.reflect.Constructor;
 import java.util.concurrent.ExecutorService;
@@ -53,7 +53,7 @@ interface ThreadProvider {
             if (isJava21) {
                 // even though we setup multi-release jar, for easier development, use reflection to create. Some IDEs
                 // complains if there are two classes with the same fq name  (even though in different release dirs)
-                Class<?> clazz = Class.forName("com.github.thunkware.ThreadProvider21");
+                Class<?> clazz = Class.forName("io.github.thunkware.ThreadProvider21");
                 Constructor<?> constructor = clazz.getDeclaredConstructors()[0];
                 return (ThreadProvider) constructor.newInstance();
             } else {
