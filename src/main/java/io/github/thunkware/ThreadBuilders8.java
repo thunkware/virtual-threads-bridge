@@ -65,13 +65,15 @@ class ThreadBuilders8 {
      */
     static final class PlatformThreadBuilder
             extends BaseThreadBuilder implements OfPlatform {
+        private ThreadProviderConfig config;
         private ThreadGroup group;
         private boolean daemon;
         private boolean daemonChanged;
         private int priority;
         private long stackSize;
 
-        PlatformThreadBuilder() {
+        PlatformThreadBuilder(ThreadProviderConfig config) {
+            this.config = config;
         }
 
         @Override
@@ -94,6 +96,9 @@ class ThreadBuilders8 {
 
         @Override
         public OfPlatform inheritInheritableThreadLocals(boolean inherit) {
+            if (!inherit) {
+                config.enforceCompatibilityPolicy(ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS);
+            }
             return this;
         }
 
