@@ -4,10 +4,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import static io.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
+import static io.github.thunkware.ThreadProviderFactory.getThreadProvider;
 
 /**
- * Utility for working with Executors API from Java 21 in Java 8+ 
+ * Utility for working with Executors API from Java21 in Java8+ VM. Convenience class for {@link ThreadProvider}
  */
 public class ExecutorTool {
 

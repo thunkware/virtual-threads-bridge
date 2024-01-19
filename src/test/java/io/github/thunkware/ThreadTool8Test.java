@@ -1,5 +1,7 @@
 package io.github.thunkware;
 
+import io.github.thunkware.ThreadTool.Builder.OfPlatform;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,9 +9,15 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import static io.github.thunkware.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
+import static io.github.thunkware.ThreadFeature.OF_VIRTUAL;
+import static io.github.thunkware.ThreadFeature.START_VIRTUAL_THREAD;
+import static io.github.thunkware.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
+import static io.github.thunkware.ThreadProvider.getThreadProvider;
 import static org.apache.commons.lang3.JavaVersion.JAVA_20;
 import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtMost;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
@@ -18,6 +26,11 @@ class ThreadTool8Test {
     @BeforeEach
     void setUp() {
         assumeThat(isJavaVersionAtMost(JAVA_20)).isTrue();
+    }
+
+    @AfterEach
+    void tearDown() {
+        getThreadProvider().getConfig().reset();
     }
 
     @Test
@@ -41,12 +54,14 @@ class ThreadTool8Test {
         };
         assertThat(ThreadTool.unstartedVirtualThread(task).isAlive()).isFalse();
     }
-    
+
     @Test
     void testOfPlatform() {
         ThreadFactory factory = ThreadTool.ofPlatform()
                 .daemon(true)
                 .name("foo")
+                .inheritInheritableThreadLocals(true)
+                .inheritInheritableThreadLocals(false)
                 .factory();
         Thread thread = factory.newThread(Thread::yield);
         assertThat(thread.isDaemon()).isTrue();
@@ -63,5 +78,37 @@ class ThreadTool8Test {
         assertThat(thread.isDaemon()).isTrue();
         assertThat(thread.getName()).isEqualTo("foo");
         assertThat(ThreadTool.isVirtual(thread)).isFalse();
+    }
+
+    @Test
+    void testConfigStartVirtualThread() {
+        getThreadProvider().getConfig().throwExceptionWhen(START_VIRTUAL_THREAD);
+        assertThatExceptionOfType(IncompatibilityException.class).isThrownBy(() -> ThreadTool.startVirtualThread(Thread::yield));
+    }
+
+    @Test
+    void testConfigUnstartedVirtualThread() {
+        getThreadProvider().getConfig().throwExceptionWhen(UNSTARTED_VIRTUAL_THREAD);
+        assertThatExceptionOfType(IncompatibilityException.class).isThrownBy(() -> ThreadTool.unstartedVirtualThread(Thread::yield));
+    }
+
+    @Test
+    void testConfigOfVirtual() {
+        getThreadProvider().getConfig().throwExceptionWhen(OF_VIRTUAL);
+        assertThatExceptionOfType(IncompatibilityException.class).isThrownBy(() -> ThreadTool.ofVirtual());
+    }
+
+    @Test
+    void testConfigInheritTrue() {
+        getThreadProvider().getConfig().throwExceptionWhen(INHERIT_INHERITABLE_THREAD_LOCALS);
+        OfPlatform ofPlatform = ThreadTool.ofPlatform();
+        assertThatNoException().isThrownBy(() -> ofPlatform.inheritInheritableThreadLocals(true));
+    }
+
+    @Test
+    void testConfigInheritFalse() {
+        getThreadProvider().getConfig().throwExceptionWhen(INHERIT_INHERITABLE_THREAD_LOCALS);
+        OfPlatform ofPlatform = ThreadTool.ofPlatform();
+        assertThatExceptionOfType(IncompatibilityException.class).isThrownBy(() -> ofPlatform.inheritInheritableThreadLocals(false));
     }
 }

@@ -12,20 +12,40 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import static io.github.thunkware.ThreadFeature.HAS_VIRTUAL_THREADS;
+import static io.github.thunkware.ThreadFeature.IS_VIRTUAL;
+import static io.github.thunkware.ThreadFeature.NEW_THREAD_PER_TASK_EXECUTOR;
+import static io.github.thunkware.ThreadFeature.NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR;
+import static io.github.thunkware.ThreadFeature.OF_PLATFORM;
+import static io.github.thunkware.ThreadFeature.OF_VIRTUAL;
+import static io.github.thunkware.ThreadFeature.START_VIRTUAL_THREAD;
+import static io.github.thunkware.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
+
 final class ThreadProvider8 implements ThreadProvider {
+
+    private final ThreadProviderConfig config = new ThreadProviderConfig();
+
+    @Override
+    public ThreadProviderConfig getConfig() {
+        return config;
+    }
 
     @Override
     public boolean hasVirtualThreads() {
+        config.enforceCompatibilityPolicy(HAS_VIRTUAL_THREADS);
         return false;
     }
 
     @Override
     public boolean isVirtual(final Thread thread) {
+        config.enforceCompatibilityPolicy(IS_VIRTUAL);
         return false;
     }
 
     @Override
     public Thread startVirtualThread(final Runnable task) {
+        config.enforceCompatibilityPolicy(START_VIRTUAL_THREAD);
+
         Thread thread = unstartedVirtualThread(task);
         thread.start();
         return thread;
@@ -33,16 +53,20 @@ final class ThreadProvider8 implements ThreadProvider {
 
     @Override
     public Thread unstartedVirtualThread(Runnable task) {
+        config.enforceCompatibilityPolicy(UNSTARTED_VIRTUAL_THREAD);
         return new Thread(task);
     }
 
     @Override
     public ExecutorService newThreadPerTaskExecutor(final ThreadFactory threadFactory) {
+        config.enforceCompatibilityPolicy(NEW_THREAD_PER_TASK_EXECUTOR);
         return new ThreadPerTaskExecutor(threadFactory);
     }
 
     @Override
     public ExecutorService newVirtualThreadPerTaskExecutor() {
+        config.enforceCompatibilityPolicy(NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR);
+
         return newThreadPerTaskExecutor(task -> {
             Thread thread = new Thread(task);
             thread.setDaemon(true);
@@ -52,11 +76,13 @@ final class ThreadProvider8 implements ThreadProvider {
 
     @Override
     public OfPlatform ofPlatform() {
-        return new ThreadBuilders8.PlatformThreadBuilder();
+        config.enforceCompatibilityPolicy(OF_PLATFORM);
+        return new ThreadBuilders8.PlatformThreadBuilder(config);
     }
 
     @Override
     public OfVirtual ofVirtual() {
+        config.enforceCompatibilityPolicy(OF_VIRTUAL);
         return new ThreadBuilders8.VirtualThreadBuilder();
     }
 

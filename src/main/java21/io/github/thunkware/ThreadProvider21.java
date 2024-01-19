@@ -9,6 +9,13 @@ import java.util.concurrent.ThreadFactory;
 
 final class ThreadProvider21 implements ThreadProvider {
 
+    private final ThreadProviderConfig config = new ThreadProviderConfig();
+
+    @Override
+    public ThreadProviderConfig getConfig() {
+        return config;
+    }
+
     @Override
     public boolean hasVirtualThreads() {
         return true;

@@ -4,12 +4,22 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.github.thunkware.ThreadProvider.ThreadProviderFactory.getThreadProvider;
+import static io.github.thunkware.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
+import static io.github.thunkware.ThreadProvider.getThreadProvider;
 
 /**
- * Utility for working with Threads API from Java 21 in Java 8+ 
+ * Utility for working with Threads API from Java21 in Java8+ VM. Convenience class for {@link ThreadProvider}
  */
 public class ThreadTool {
+
+    /**
+     * Get configuration for the shared ThreadProvider instance
+     * 
+     * @return true if the JVM supports virtual threads
+     */
+    public static ThreadProviderConfig getConfig() {
+        return getThreadProvider().getConfig();
+    }
 
     /**
      * On Java 8+, returns false
@@ -118,6 +128,7 @@ public class ThreadTool {
          * @param inherit {@code true} to inherit, {@code false} to not inherit
          * @return this builder
          */
+        @ConfigFeature(feature = INHERIT_INHERITABLE_THREAD_LOCALS)
         Builder inheritInheritableThreadLocals(boolean inherit);
 
         /**
@@ -159,16 +170,6 @@ public class ThreadTool {
          * that creates platform threads.
          */
         interface OfPlatform extends Builder {
-
-            @Override OfPlatform name(String name);
-
-            /**
-             * @throws IllegalArgumentException {@inheritDoc}
-             */
-            @Override OfPlatform name(String prefix, long start);
-
-            @Override OfPlatform inheritInheritableThreadLocals(boolean inherit);
-            @Override OfPlatform uncaughtExceptionHandler(UncaughtExceptionHandler ueh);
 
             /**
              * Sets the thread group.
@@ -224,25 +225,15 @@ public class ThreadTool {
          * that creates virtual threads.
          */
         interface OfVirtual extends Builder {
-
-            @Override OfVirtual name(String name);
-
-            /**
-             * @throws IllegalArgumentException {@inheritDoc}
-             */
-            @Override OfVirtual name(String prefix, long start);
-
-            @Override OfVirtual inheritInheritableThreadLocals(boolean inherit);
-            @Override OfVirtual uncaughtExceptionHandler(UncaughtExceptionHandler ueh);
         }
     }
-    
+
     private static final AtomicInteger threadNumber = new AtomicInteger();
 
     static String genThreadName() {
         return "Thread-" + threadNumber.getAndIncrement();
     }
-    
+
     private ThreadTool() {
         throw new AssertionError();
     }
