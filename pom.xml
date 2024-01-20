@@ -4,7 +4,7 @@
 
     <groupId>io.github.thunkware</groupId>
     <artifactId>virtual-threads-backport</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
     <name>virtual-threads-backport</name>
 
@@ -62,7 +62,7 @@
         <connection>scm:git:git://github.com/thunkware/virtual-threads-backport.git</connection>
         <developerConnection>scm:git:https://github.com/thunkware/virtual-threads-backport.git</developerConnection>
         <url>http://github.com/thunkware/virtual-threads-backport/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>virtual-threads-backport-0.0.3</tag>
     </scm>
 
     <developers>
