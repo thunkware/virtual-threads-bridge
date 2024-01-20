@@ -1,10 +1,10 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-import static io.github.thunkware.CompatibilityPolicy.THROW_EXCEPTION;
-import static io.github.thunkware.ThreadProviderFactory.isJava21;
+import static io.github.thunkware.vt.bridge.CompatibilityPolicy.THROW_EXCEPTION;
+import static io.github.thunkware.vt.bridge.ThreadProviderFactory.isJava21;
 
 /**
  * Configuration for {@link ThreadProvider}

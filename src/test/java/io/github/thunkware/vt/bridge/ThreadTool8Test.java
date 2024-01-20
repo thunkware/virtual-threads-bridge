@@ -1,6 +1,6 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
-import io.github.thunkware.ThreadTool.Builder.OfPlatform;
+import io.github.thunkware.vt.bridge.ThreadTool.Builder.OfPlatform;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +9,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import static io.github.thunkware.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
-import static io.github.thunkware.ThreadFeature.OF_VIRTUAL;
-import static io.github.thunkware.ThreadFeature.START_VIRTUAL_THREAD;
-import static io.github.thunkware.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
-import static io.github.thunkware.ThreadProvider.getThreadProvider;
+import static io.github.thunkware.vt.bridge.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
+import static io.github.thunkware.vt.bridge.ThreadFeature.OF_VIRTUAL;
+import static io.github.thunkware.vt.bridge.ThreadFeature.START_VIRTUAL_THREAD;
+import static io.github.thunkware.vt.bridge.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
+import static io.github.thunkware.vt.bridge.ThreadProvider.getThreadProvider;
 import static org.apache.commons.lang3.JavaVersion.JAVA_20;
 import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtMost;
 import static org.assertj.core.api.Assertions.assertThat;

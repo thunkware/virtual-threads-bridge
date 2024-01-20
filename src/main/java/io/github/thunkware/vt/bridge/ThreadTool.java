@@ -1,11 +1,11 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.github.thunkware.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
-import static io.github.thunkware.ThreadProvider.getThreadProvider;
+import static io.github.thunkware.vt.bridge.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
+import static io.github.thunkware.vt.bridge.ThreadProvider.getThreadProvider;
 
 /**
  * Utility for working with Threads API from Java21 in Java8+ VM. Convenience class for {@link ThreadProvider}

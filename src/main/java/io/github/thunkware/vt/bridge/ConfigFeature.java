@@ -1,4 +1,4 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

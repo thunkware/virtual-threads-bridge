@@ -1,4 +1,4 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
 /**
  * Exception thrown to indicate incompatibility
