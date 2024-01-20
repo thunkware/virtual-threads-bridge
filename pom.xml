@@ -4,7 +4,7 @@
 
     <groupId>io.github.thunkware</groupId>
     <artifactId>virtual-threads-bridge</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>virtual-threads-bridge</name>
 
@@ -42,12 +42,6 @@
         <assertj-core.version>3.19.0</assertj-core.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
     </properties>
-
-    <distributionManagement>
-        <relocation>
-            <artifactId>virtual-threads-bridge</artifactId>
-        </relocation>
-    </distributionManagement>
 
     <licenses>
         <license>
