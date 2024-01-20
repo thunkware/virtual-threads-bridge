@@ -1,4 +1,4 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
 import java.lang.reflect.Constructor;
 
@@ -40,7 +40,7 @@ class ThreadProviderFactory {
         if (isJava21) {
             // even though we setup multi-release jar, for easier development, use reflection to create. Some IDEs
             // complains if there are two classes with the same fq name  (even though those are in different release dirs)
-            Class<?> clazz = Class.forName("io.github.thunkware.ThreadProvider21");
+            Class<?> clazz = Class.forName(ThreadProvider.class.getPackage().getName() + ".ThreadProvider21");
             Constructor<?> constructor = clazz.getDeclaredConstructors()[0];
             return (ThreadProvider) constructor.newInstance();
         } else {

@@ -1,10 +1,10 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import static io.github.thunkware.ThreadProviderFactory.getThreadProvider;
+import static io.github.thunkware.vt.bridge.ThreadProviderFactory.getThreadProvider;
 
 /**
  * Utility for working with Executors API from Java21 in Java8+ VM. Convenience class for {@link ThreadProvider}

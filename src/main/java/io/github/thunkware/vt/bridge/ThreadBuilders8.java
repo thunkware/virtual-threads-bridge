@@ -1,7 +1,7 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
-import io.github.thunkware.ThreadTool.Builder.OfPlatform;
-import io.github.thunkware.ThreadTool.Builder.OfVirtual;
+import io.github.thunkware.vt.bridge.ThreadTool.Builder.OfPlatform;
+import io.github.thunkware.vt.bridge.ThreadTool.Builder.OfVirtual;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Objects;

@@ -1,13 +1,12 @@
-# virtual-threads-backport
+# virtual-threads-bridge
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.thunkware/virtual-threads-backport/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.thunkware/virtual-threads-backport)
-[![Javadoc](https://javadoc.io/badge2/io.github.thunkware/virtual-threads-backport/javadoc.svg)](https://javadoc.io/doc/io.github.thunkware/virtual-threads-backport)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.thunkware/virtual-threads-bridge/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.thunkware/virtual-threads-bridge)
+[![Javadoc](https://javadoc.io/badge2/io.github.thunkware/virtual-threads-bridge/javadoc.svg)](https://javadoc.io/doc/io.github.thunkware/virtual-threads-bridge)
 
-This is a partial backport of Java21's Virtual Threads API to Java8+. Obviously only the API, not the implementation, is backported.
+This library allows you to use Java21's Virtual Threads API in Java8+. It's as if Virtual Threads API (but not the implementation) has been backported or bridged.
+You could then more easily write code that is compatible with both Java21 virtual threads and pre-Java21 platform threads.
 
-It allows you to more easily write code that is compatible with both Java21 virtual threads and pre-Java21 platform threads.
-
-For example, you might have a Java8 or pre-Java21 library, and you want it to take advantage of virtual threads if run on Java21 JVM. This project allows you to write code like this:
+For example, you might have your own Java8 or pre-Java21 library, and you want it to take advantage of virtual threads if your library is run on Java21 JVM. With virtual-threads-bridgem you can write code like this:
 
 ```java
 ExecutorService executor = ExecutorTool.hasVirtualThreads()
@@ -23,12 +22,12 @@ Thread thread = ThreadTool.hasVirtualThreads()
     : new Thread(myRunnable);
 ```
 
-The following Java21 APIs are backported:
+The following Java21 APIs are bridged:
 
 <table>
   <tr>
     <th>Java21</th>
-    <th>Backport</th>
+    <th>Bridge</th>
   </tr>
   <tr>
     <td>
@@ -36,7 +35,7 @@ The following Java21 APIs are backported:
     Thread.isVirtual()</a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-backport/blob/virtual-threads-backport-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L31">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L31">
     ThreadTool.isVirtual(Thread)</a>
     </td>
   </tr>
@@ -47,7 +46,7 @@ The following Java21 APIs are backported:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-backport/blob/virtual-threads-backport-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L73">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L73">
     ThreadTool.ofPlatform()
     </a>
     </td>
@@ -59,7 +58,7 @@ The following Java21 APIs are backported:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-backport/blob/virtual-threads-backport-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L85">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L85">
     ThreadTool.ofVirtual()
     </a>
     </td>
@@ -71,7 +70,7 @@ The following Java21 APIs are backported:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-backport/blob/virtual-threads-backport-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L52">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.2/src/main/java/io/github/thunkware/ThreadTool.java#L52">
     ThreadTool.startVirtualThread(Runnable)
     </a>
     </td>
@@ -83,7 +82,7 @@ The following Java21 APIs are backported:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-backport/blob/virtual-threads-backport-0.0.2/src/main/java/io/github/thunkware/ExecutorTool.java#L37">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.2/src/main/java/io/github/thunkware/ExecutorTool.java#L37">
     ExecutorTool.newThreadPerTaskExecutor(ThreadFactory)
     </a>
     </td>
@@ -95,7 +94,7 @@ The following Java21 APIs are backported:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-backport/blob/virtual-threads-backport-0.0.2/src/main/java/io/github/thunkware/ExecutorTool.java#L51">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.2/src/main/java/io/github/thunkware/ExecutorTool.java#L51">
     ExecutorTool.newVirtualThreadPerTaskExecutor()
     </a>
     </td>
@@ -111,8 +110,8 @@ Add the library to maven pom.xml (or the equivalent in your build system):
 ```xml
 <dependency>
     <groupId>io.github.thunkware</groupId>
-    <artifactId>virtual-threads-backport</artifactId>
-    <version>0.0.2</version>
+    <artifactId>virtual-threads-bridge</artifactId>
+    <version>0.0.4</version>
 </dependency>
 ```
 

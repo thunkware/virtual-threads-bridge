@@ -1,18 +1,18 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
-import io.github.thunkware.ThreadTool.Builder;
+import io.github.thunkware.vt.bridge.ThreadTool.Builder;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import static io.github.thunkware.ThreadFeature.HAS_VIRTUAL_THREADS;
-import static io.github.thunkware.ThreadFeature.NEW_THREAD_PER_TASK_EXECUTOR;
-import static io.github.thunkware.ThreadFeature.NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR;
-import static io.github.thunkware.ThreadFeature.OF_PLATFORM;
-import static io.github.thunkware.ThreadFeature.OF_VIRTUAL;
-import static io.github.thunkware.ThreadFeature.START_VIRTUAL_THREAD;
-import static io.github.thunkware.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
+import static io.github.thunkware.vt.bridge.ThreadFeature.HAS_VIRTUAL_THREADS;
+import static io.github.thunkware.vt.bridge.ThreadFeature.NEW_THREAD_PER_TASK_EXECUTOR;
+import static io.github.thunkware.vt.bridge.ThreadFeature.NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR;
+import static io.github.thunkware.vt.bridge.ThreadFeature.OF_PLATFORM;
+import static io.github.thunkware.vt.bridge.ThreadFeature.OF_VIRTUAL;
+import static io.github.thunkware.vt.bridge.ThreadFeature.START_VIRTUAL_THREAD;
+import static io.github.thunkware.vt.bridge.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
 
 /**
  * Provides various Java21 Virtual Thread features in Java8+ VM 

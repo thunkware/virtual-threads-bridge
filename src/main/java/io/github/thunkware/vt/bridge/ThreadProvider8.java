@@ -1,7 +1,7 @@
-package io.github.thunkware;
+package io.github.thunkware.vt.bridge;
 
-import io.github.thunkware.ThreadTool.Builder.OfPlatform;
-import io.github.thunkware.ThreadTool.Builder.OfVirtual;
+import io.github.thunkware.vt.bridge.ThreadTool.Builder.OfPlatform;
+import io.github.thunkware.vt.bridge.ThreadTool.Builder.OfVirtual;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,14 +12,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import static io.github.thunkware.ThreadFeature.HAS_VIRTUAL_THREADS;
-import static io.github.thunkware.ThreadFeature.IS_VIRTUAL;
-import static io.github.thunkware.ThreadFeature.NEW_THREAD_PER_TASK_EXECUTOR;
-import static io.github.thunkware.ThreadFeature.NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR;
-import static io.github.thunkware.ThreadFeature.OF_PLATFORM;
-import static io.github.thunkware.ThreadFeature.OF_VIRTUAL;
-import static io.github.thunkware.ThreadFeature.START_VIRTUAL_THREAD;
-import static io.github.thunkware.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
+import static io.github.thunkware.vt.bridge.ThreadFeature.HAS_VIRTUAL_THREADS;
+import static io.github.thunkware.vt.bridge.ThreadFeature.IS_VIRTUAL;
+import static io.github.thunkware.vt.bridge.ThreadFeature.NEW_THREAD_PER_TASK_EXECUTOR;
+import static io.github.thunkware.vt.bridge.ThreadFeature.NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR;
+import static io.github.thunkware.vt.bridge.ThreadFeature.OF_PLATFORM;
+import static io.github.thunkware.vt.bridge.ThreadFeature.OF_VIRTUAL;
+import static io.github.thunkware.vt.bridge.ThreadFeature.START_VIRTUAL_THREAD;
+import static io.github.thunkware.vt.bridge.ThreadFeature.UNSTARTED_VIRTUAL_THREAD;
 
 final class ThreadProvider8 implements ThreadProvider {
 

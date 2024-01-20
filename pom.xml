@@ -3,15 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.thunkware</groupId>
-    <artifactId>virtual-threads-backport</artifactId>
+    <artifactId>virtual-threads-bridge</artifactId>
     <version>0.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>virtual-threads-backport</name>
+    <name>virtual-threads-bridge</name>
 
     <description>
-        Backport of Virtual Threads API to Java 8
+        Bridges Java21 Virtual Threads API to Java8+
     </description>
-    <url>https://github.com/thunkware/virtual-threads-backport</url>
+    <url>https://github.com/thunkware/virtual-threads-bridge</url>
     <inceptionYear>2023</inceptionYear>
     <organization>
         <name>thunkware</name>
@@ -59,9 +59,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/thunkware/virtual-threads-backport.git</connection>
-        <developerConnection>scm:git:https://github.com/thunkware/virtual-threads-backport.git</developerConnection>
-        <url>http://github.com/thunkware/virtual-threads-backport/tree/master</url>
+        <connection>scm:git:git://github.com/thunkware/virtual-threads-bridge.git</connection>
+        <developerConnection>scm:git:https://github.com/thunkware/virtual-threads-bridge.git</developerConnection>
+        <url>http://github.com/thunkware/virtual-threads-bridge/tree/master</url>
         <tag>HEAD</tag>
     </scm>
 
