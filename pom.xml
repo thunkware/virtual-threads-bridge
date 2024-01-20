@@ -43,11 +43,11 @@
         <commons-lang3.version>3.14.0</commons-lang3.version>
     </properties>
 
-  <distributionManagement>
-    <relocation>
-      <artifactId>loom-bridge</artifactId>
-    </relocation>
-  </distributionManagement>
+    <distributionManagement>
+        <relocation>
+            <artifactId>virtual-threads-bridge</artifactId>
+        </relocation>
+    </distributionManagement>
 
     <licenses>
         <license>
