@@ -20,7 +20,30 @@ Thread thread = ThreadTool.hasVirtualThreads()
     ? ThreadTool.unstartedVirtualThread(myRunnable)
     : new Thread(myRunnable);
 ```
+<br>
+Of course, it's dangerous to blindly create excessive number of (platform) threads in  Java8+/preJava21 without checking if virtual threads are available:
 
+```java
+void processQueueMessage(...) {
+   ThreadTool.startVirtualThread(this::process);  // dangerous in Java8+/preJava21
+}
+```
+
+You can configure the library to throw exception if attempt is made to create virtual threads in Java8+/preJava21 (as opposed to creating in Java21):
+
+```java
+
+public static void main(String ...) {
+    // on app startup, configure library to throw exception if
+    // startVirtualThread() is called in Java8+/preJava21
+    ThreadTool.getConfig().throwExceptionWhen(START_VIRTUAL_THREAD);
+}
+
+void processQueueMessage(...) {
+   ThreadTool.startVirtualThread(this::process);  // exception thrown here
+}
+```
+<br>
 The following Java21 APIs are bridged:
 
 <table>
