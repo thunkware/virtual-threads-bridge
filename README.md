@@ -3,8 +3,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.thunkware/virtual-threads-bridge/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.thunkware/virtual-threads-bridge)
 [![Javadoc](https://javadoc.io/badge2/io.github.thunkware/virtual-threads-bridge/javadoc.svg)](https://javadoc.io/doc/io.github.thunkware/virtual-threads-bridge)
 
-This library allows you to use Java21's Virtual Threads API in Java8+. It's as if Virtual Threads API (but not the implementation) has been backported or bridged.
-You could then more easily write code that is compatible with both Java21 virtual threads and pre-Java21 platform threads.
+This library allows you to use Java21's Virtual Threads API in Java8+. You could then more easily write code that is compatible with both Java21 virtual threads and pre-Java21 platform threads.
 
 For example, you might have your own Java8 or pre-Java21 library, and you want it to take advantage of virtual threads if your library is run on Java21 JVM. With virtual-threads-bridgem you can write code like this:
 
