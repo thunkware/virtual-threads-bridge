@@ -23,7 +23,7 @@ public interface ThreadProvider {
      * Get configuration for this ThreadProvider
      * @return {@link ThreadProviderConfig}
      */
-    public ThreadProviderConfig getConfig();
+    ThreadProviderConfig getConfig();
 
     /**
      * On Java 8+, returns false
@@ -32,7 +32,7 @@ public interface ThreadProvider {
      * @return true if the JVM supports virtual threads
      */
     @ConfigFeature(feature = HAS_VIRTUAL_THREADS)
-    public boolean hasVirtualThreads();
+    boolean hasVirtualThreads();
 
     /**
      * Returns {@code true} if the thread is a virtual thread. A virtual thread
@@ -42,7 +42,7 @@ public interface ThreadProvider {
      * @return {@code true} if the thread is a virtual thread
      */
     @ConfigFeature(feature = HAS_VIRTUAL_THREADS)
-    public boolean isVirtual(Thread thread);
+    boolean isVirtual(Thread thread);
 
     /**
      * On Java 8+, creates a platform thread to execute a task and schedules it to execute. <p>
@@ -52,7 +52,7 @@ public interface ThreadProvider {
      * @return a new, and started, thread
      */
     @ConfigFeature(feature = START_VIRTUAL_THREAD)
-    public Thread startVirtualThread(Runnable task);
+    Thread startVirtualThread(Runnable task);
 
     /**
      * On Java 8+, creates a platform thread to execute a task. <p>
@@ -62,7 +62,7 @@ public interface ThreadProvider {
      * @return a new, and unstarted, thread
      */
     @ConfigFeature(feature = UNSTARTED_VIRTUAL_THREAD)
-    public Thread unstartedVirtualThread(Runnable task);
+    Thread unstartedVirtualThread(Runnable task);
 
     /**
      * Creates an Executor that starts a new Thread for each task.
@@ -78,7 +78,7 @@ public interface ThreadProvider {
      * @throws NullPointerException if threadFactory is null
      */
     @ConfigFeature(feature = NEW_THREAD_PER_TASK_EXECUTOR)
-    public ExecutorService newThreadPerTaskExecutor(ThreadFactory threadFactory);
+    ExecutorService newThreadPerTaskExecutor(ThreadFactory threadFactory);
 
     /**
      * Creates an Executor that starts a new virtual Thread on Java 21 + (or new platform thread on Java 8+) for each task.
@@ -91,7 +91,7 @@ public interface ThreadProvider {
      * @return a new executor that creates a new virtual Thread for each task
      */
     @ConfigFeature(feature = NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR)
-    public ExecutorService newVirtualThreadPerTaskExecutor();
+    ExecutorService newVirtualThreadPerTaskExecutor();
 
     /**
      * Returns a builder for creating a platform {@code Thread} or {@code ThreadFactory}
@@ -100,7 +100,7 @@ public interface ThreadProvider {
      * @return A builder for creating {@code Thread} or {@code ThreadFactory} objects.
      */
     @ConfigFeature(feature = OF_PLATFORM)
-    public Builder.OfPlatform ofPlatform();
+    Builder.OfPlatform ofPlatform();
 
     /**
      * On Java 8+, returns a builder for creating a platform {@code Thread} or {@code ThreadFactory}
@@ -111,13 +111,13 @@ public interface ThreadProvider {
      * @return A builder for creating {@code Thread} or {@code ThreadFactory} objects.
      */
     @ConfigFeature(feature = OF_VIRTUAL)
-    public Builder.OfVirtual ofVirtual();
+    Builder.OfVirtual ofVirtual();
 
     /**
      * Get a shared ThreadProvider instance
      * @return ThreadProvider
      */
-    public static ThreadProvider getThreadProvider() {
+    static ThreadProvider getThreadProvider() {
         return ThreadProviderFactory.getThreadProvider();
     }
 
@@ -125,7 +125,7 @@ public interface ThreadProvider {
      * Create a new ThreadProvider instance
      * @return ThreadProvider
      */
-    public static ThreadProvider createThreadProvider() {
+    static ThreadProvider createThreadProvider() {
         return ThreadProviderFactory.createThreadProvider();
     }
 }

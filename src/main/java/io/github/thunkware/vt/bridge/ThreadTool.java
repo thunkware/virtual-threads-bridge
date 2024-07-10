@@ -15,7 +15,7 @@ public class ThreadTool {
     /**
      * Get configuration for the shared ThreadProvider instance
      * 
-     * @return true if the JVM supports virtual threads
+     * @return the configuration for the shared ThreadProvider instance
      */
     public static ThreadProviderConfig getConfig() {
         return getThreadProvider().getConfig();
@@ -27,7 +27,7 @@ public class ThreadTool {
      *
      * @return true if the JVM supports virtual threads
      */
-    public static final boolean hasVirtualThreads() {
+    public static boolean hasVirtualThreads() {
         return getThreadProvider().hasVirtualThreads();
     }
 
@@ -38,7 +38,7 @@ public class ThreadTool {
      * @param thread Thread
      * @return {@code true} if the thread is a virtual thread
      */
-    public static final boolean isVirtual(Thread thread) {
+    public static boolean isVirtual(Thread thread) {
         return getThreadProvider().isVirtual(thread);
     }
 
@@ -48,7 +48,7 @@ public class ThreadTool {
      *
      * @return {@code true} if this thread is a virtual thread
      */
-    public static final boolean isVirtual() {
+    public static boolean isVirtual() {
         return getThreadProvider().isVirtual(Thread.currentThread());
     }
 
@@ -86,9 +86,9 @@ public class ThreadTool {
 
     /**
      * On Java 8+, returns a builder for creating a platform {@code Thread} or {@code ThreadFactory}
-     * that creates platform threads. <p>
+     * <p>that creates platform threads.</p>
      * On Java 21+, returns a builder for creating a platform {@code Thread} or {@code ThreadFactory}
-     * that creates virtual threads. <p>
+     * <p>that creates virtual threads.</p>
      *
      * @return A builder for creating {@code Thread} or {@code ThreadFactory} objects.
      */
