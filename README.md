@@ -5,7 +5,7 @@
 
 This library allows you to use Java21's Virtual Threads API in Java8+. You could then more easily write code that is compatible with both Java21 virtual threads and pre-Java21 platform threads.
 
-For example, you might have your own Java8 or pre-Java21 library, and you want it to take advantage of virtual threads if your library is run on Java21 JVM. With virtual-threads-bridgem you can write code like this:
+For example, you might have your own Java8 or pre-Java21 library, and you want it to take advantage of virtual threads if your library is run on Java21 JVM. With virtual-threads-bridge you can write code like this:
 
 ```java
 ExecutorService executor = ExecutorTool.hasVirtualThreads()
