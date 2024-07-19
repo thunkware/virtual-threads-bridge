@@ -1,11 +1,8 @@
 package io.github.thunkware.vt.bridge;
 
-import static org.apache.commons.lang3.JavaVersion.JAVA_20;
-import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtMost;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assumptions.assumeThat;
+import org.apache.commons.lang3.time.StopWatch;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.List;
@@ -16,9 +13,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.commons.lang3.time.StopWatch;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.apache.commons.lang3.JavaVersion.JAVA_20;
+import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtMost;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 class ExecutorTool8Test {
 
@@ -119,5 +119,42 @@ class ExecutorTool8Test {
         waitingLatch.countDown();
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
+    }
+
+    @Test
+    void testNewVirtualThreadPerTaskExecutorThreadName() throws Exception {
+        ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor(
+                ThreadCustomizer.withNamePrefix("my-thread-"));
+        verifyThreadNamePrefix(executor);
+    }
+
+    @Test
+    void testNewVirtualThreadPerTaskExecutorGlobalThreadName() throws Exception {
+        ThreadTool.getConfig().setThreadCustomizer(ThreadCustomizer.withNamePrefix("my-thread-"));
+        ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
+        try {
+            verifyThreadNamePrefix(executor);
+        } finally {
+            ThreadTool.getConfig().setThreadCustomizer(thread -> {
+            });
+        }
+    }
+
+    private void verifyThreadNamePrefix(ExecutorService executor) {
+        CountDownLatch latch = new CountDownLatch(2);
+        Future<?> future1 = executor.submit(() -> {
+            assertThat(ThreadTool.isVirtual()).isFalse();
+            assertThat(Thread.currentThread().getName()).isEqualTo("my-thread-0");
+            latch.countDown();
+        });
+        assertThatNoException().isThrownBy(() -> future1.get(1, TimeUnit.SECONDS));
+
+        Future<?> future2 = executor.submit(() -> {
+            assertThat(ThreadTool.isVirtual()).isFalse();
+            assertThat(Thread.currentThread().getName()).isEqualTo("my-thread-1");
+            latch.countDown();
+        });
+        assertThatNoException().isThrownBy(() -> future2.get(1, TimeUnit.SECONDS));
+        assertThatNoException().isThrownBy(() -> latch.await(1, TimeUnit.SECONDS));
     }
 }

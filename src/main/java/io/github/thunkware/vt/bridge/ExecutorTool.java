@@ -1,11 +1,11 @@
 package io.github.thunkware.vt.bridge;
 
-import static io.github.thunkware.vt.bridge.ThreadProviderFactory.getThreadProvider;
-
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+
+import static io.github.thunkware.vt.bridge.ThreadProviderFactory.getThreadProvider;
 
 /**
  * Utility for working with Executors API from Java21 in Java8+ VM. Convenience class for {@link ThreadProvider}
@@ -51,6 +51,21 @@ public class ExecutorTool {
      */
     public static ExecutorService newVirtualThreadPerTaskExecutor() {
         return getThreadProvider().newVirtualThreadPerTaskExecutor();
+    }
+
+    /**
+     * Creates an Executor that starts a new virtual Thread on Java 21 + (or new platform thread on Java 8+) for each task.
+     * The number of threads created by the Executor is unbounded.
+     *
+     * <p> This method is equivalent to invoking
+     * {@link #newThreadPerTaskExecutor(ThreadFactory)} with a thread factory
+     * that creates virtual threads.
+     *
+     * @param threadCustomizer ThreadCustomizer to customize new unstarted threads
+     * @return a new executor that creates a new virtual Thread for each task
+     */
+    public static ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer) {
+        return getThreadProvider().newVirtualThreadPerTaskExecutor(threadCustomizer);
     }
 
     /**

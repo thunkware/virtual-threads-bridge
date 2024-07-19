@@ -43,6 +43,19 @@ void processQueueMessage(...) {
    ThreadTool.startVirtualThread(this::process);  // exception thrown here
 }
 ```
+
+Note that virtual threads do not have a thread name by default. To set names for threads, call:
+
+```java
+// set name prefix globally for all threads created by this library
+ThreadTool.getConfig().setThreadCustomizer(ThreadCustomizer.withNamePrefix("my-rpc-thread-"));
+
+// set name prefix for threads in this Executor
+ExecutorService executor = ExecutorTool.hasVirtualThreads()
+    ? ExecutorTool.newVirtualThreadPerTaskExecutor(ThreadCustomizer.withNamePrefix("my-rpc-thread-"))
+    : Executors.newCachedThreadPool();
+```
+
 <br>
 The following Java21 APIs are bridged:
 
