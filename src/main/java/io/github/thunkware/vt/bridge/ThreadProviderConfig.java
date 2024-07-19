@@ -12,6 +12,9 @@ import static io.github.thunkware.vt.bridge.ThreadProviderFactory.isJava21;
 public class ThreadProviderConfig {
 
     private final Map<ThreadFeature, CompatibilityPolicy> policies = new EnumMap<>(ThreadFeature.class);
+    private ThreadCustomizer threadCustomizer = thread -> {
+        // no op
+    };
 
     /**
      * Same as setCompatibilityPolicy(ThreadFeature, THROW_EXCEPTION)
@@ -30,7 +33,7 @@ public class ThreadProviderConfig {
     public CompatibilityPolicy getCompatibilityPolicy(ThreadFeature threadFeature) {
         return policies.getOrDefault(threadFeature, CompatibilityPolicy.BEST_EFFORT);
     }
-    
+
     /**
      * Sets CompatibilityPolicy for a thread feature
      * @param threadFeature ThreadFeature
@@ -40,6 +43,14 @@ public class ThreadProviderConfig {
     public ThreadProviderConfig setCompatibilityPolicy(ThreadFeature threadFeature, CompatibilityPolicy policy) {
         policies.put(threadFeature, policy);
         return this;
+    }
+
+    public ThreadCustomizer getThreadCustomizer() {
+        return threadCustomizer;
+    }
+
+    public void setThreadCustomizer(ThreadCustomizer threadCustomizer) {
+        this.threadCustomizer = threadCustomizer;
     }
 
     void reset() {

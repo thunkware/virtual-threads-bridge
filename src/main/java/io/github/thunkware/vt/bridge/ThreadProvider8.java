@@ -54,7 +54,9 @@ final class ThreadProvider8 implements ThreadProvider {
     @Override
     public Thread unstartedVirtualThread(Runnable task) {
         config.enforceCompatibilityPolicy(UNSTARTED_VIRTUAL_THREAD);
-        return new Thread(task);
+        Thread thread = new Thread(task);
+        config.getThreadCustomizer().customize(thread);
+        return thread;
     }
 
     @Override
@@ -67,11 +69,14 @@ final class ThreadProvider8 implements ThreadProvider {
     public ExecutorService newVirtualThreadPerTaskExecutor() {
         config.enforceCompatibilityPolicy(NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR);
 
-        return newThreadPerTaskExecutor(task -> {
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            return thread;
-        });
+        return newThreadPerTaskExecutor(this::unstartedVirtualThread);
+    }
+
+    @Override
+    public ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer) {
+        config.enforceCompatibilityPolicy(NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR);
+
+        return newThreadPerTaskExecutor(threadCustomizer.asThreadFactory(this::unstartedVirtualThread));
     }
 
     @Override
@@ -151,5 +156,4 @@ final class ThreadProvider8 implements ThreadProvider {
         }
 
     }
-
 }

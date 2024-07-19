@@ -94,6 +94,20 @@ public interface ThreadProvider {
     ExecutorService newVirtualThreadPerTaskExecutor();
 
     /**
+     * Creates an Executor that starts a new virtual Thread on Java 21 + (or new platform thread on Java 8+) for each task.
+     * The number of threads created by the Executor is unbounded.
+     *
+     * <p> This method is equivalent to invoking
+     * {@link #newThreadPerTaskExecutor(ThreadFactory)} with a thread factory
+     * that creates virtual threads.
+     *
+     * @param threadCustomizer ThreadCustomizer to customize new unstarted threads
+     * @return a new executor that creates a new virtual Thread for each task
+     */
+    @ConfigFeature(feature = NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR)
+    ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer);
+
+    /**
      * Returns a builder for creating a platform {@code Thread} or {@code ThreadFactory}
      * that creates platform threads.
      *
