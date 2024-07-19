@@ -80,7 +80,7 @@ public class SempahoreExecutor implements ExecutorService {
         boolean isAcquired = semaphore.tryAcquire(acquireTimeout.toNanos(), TimeUnit.NANOSECONDS);
 
         if (!isAcquired) {
-            throw new TimeoutException(String.format("Task not aquired before the acquireTimeout %s", acquireTimeout));
+            throw new TimeoutException(String.format("Permit not acquired before the acquireTimeout %s", acquireTimeout));
         }
 
         return null;

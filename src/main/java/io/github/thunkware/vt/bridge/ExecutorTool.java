@@ -70,14 +70,14 @@ public class ExecutorTool {
      * 
      * <p>
      * When executing a task with the created ExecutorService if one permit is
-     * available it executes the task, if no permit is available then the current
+     * available, the task is executed. If no permit is available, then the executor
      * thread becomes disabled for thread scheduling purposes and lies dormant until
      * one of three things happens:
      * <ul>
-     * <li>A permit becomes available</li>
-     * <li>Some other thread {@linkplain Thread#interrupt interrupts} the current
+     * <li>a permit becomes available</li>
+     * <li>some other thread {@linkplain Thread#interrupt interrupts} the current
      * thread; or</li>
-     * <li>The specified waiting time elapses.</li>
+     * <li>the specified waiting time elapses, in which case a Timeout exception is thrown</li>
      * </ul>
      *
      * @param permits        number of sempahore permits
