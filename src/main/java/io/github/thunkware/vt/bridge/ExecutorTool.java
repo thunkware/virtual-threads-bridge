@@ -1,10 +1,11 @@
 package io.github.thunkware.vt.bridge;
 
+import static io.github.thunkware.vt.bridge.ThreadProviderFactory.getThreadProvider;
+
+import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-
-import static io.github.thunkware.vt.bridge.ThreadProviderFactory.getThreadProvider;
 
 /**
  * Utility for working with Executors API from Java21 in Java8+ VM. Convenience class for {@link ThreadProvider}
@@ -61,6 +62,32 @@ public class ExecutorTool {
     public static ExecutorService newSempahoreVirtualExecutor(int permits) {
         ExecutorService executor = getThreadProvider().newVirtualThreadPerTaskExecutor();
         return new SempahoreExecutor(executor, permits);
+    }
+
+    /**
+     * Creates an Executor that starts a new virtual Thread and limits concurrency
+     * to the number of semaphore permits.
+     * 
+     * <p>
+     * When executing a task with the created ExecutorService if one permit is
+     * available, the task is executed. If no permit is available, then the executor
+     * thread becomes disabled for thread scheduling purposes and lies dormant until
+     * one of three things happens:
+     * <ul>
+     * <li>a permit becomes available</li>
+     * <li>some other thread {@linkplain Thread#interrupt interrupts} the current
+     * thread; or</li>
+     * <li>the specified waiting time elapses, in which case a Timeout exception is thrown</li>
+     * </ul>
+     *
+     * @param permits        number of sempahore permits
+     * @param acquireTimeout time to wait for acquire a new task when no permit is
+     *                       available
+     * @return a new executor with limited concurrency
+     */
+    public static ExecutorService newSempahoreVirtualExecutor(int permits, Duration acquireTimeout) {
+        ExecutorService executor = getThreadProvider().newVirtualThreadPerTaskExecutor();
+        return new SempahoreExecutor(executor, permits, acquireTimeout);
     }
 
     private ExecutorTool() {
