@@ -152,5 +152,4 @@ public class SempahoreExecutor implements ExecutorService {
         return delegate.invokeAny(toSemaphoreCallables(tasks), timeout, unit);
     }
 
-
 }
