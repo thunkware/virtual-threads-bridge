@@ -1,5 +1,6 @@
 package io.github.thunkware.vt.bridge;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -18,6 +19,7 @@ public class SempahoreExecutor implements ExecutorService {
 
     private final ExecutorService delegate;
     private final Semaphore semaphore;
+    private final Callable<Void> aquireStrategy;
 
     public SempahoreExecutor(ExecutorService delegate, int permits) {
         this(delegate, new Semaphore(permits, true));
@@ -26,6 +28,17 @@ public class SempahoreExecutor implements ExecutorService {
     public SempahoreExecutor(ExecutorService delegate, Semaphore semaphore) {
         this.delegate = delegate;
         this.semaphore = semaphore;
+        this.aquireStrategy = this::semaphoreAquireStrategy;
+    }
+
+    public SempahoreExecutor(ExecutorService delegate, int permits, Duration acquireTimeout) {
+        this(delegate, new Semaphore(permits, true), acquireTimeout);
+    }
+
+    public SempahoreExecutor(ExecutorService delegate, Semaphore semaphore, Duration acquireTimeout) {
+        this.delegate = delegate;
+        this.semaphore = semaphore;
+        this.aquireStrategy = () -> this.semaphoreTryAquireStrategy(acquireTimeout);
     }
 
     private <T> List<Callable<T>> toSemaphoreCallables(Collection<? extends Callable<T>> callables) {
@@ -37,7 +50,7 @@ public class SempahoreExecutor implements ExecutorService {
     private <T> Callable<T> toSemaphoreCallable(Callable<T> callable) {
         return () -> {
             try {
-                semaphore.acquire();
+                aquireStrategy.call();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException();
@@ -56,6 +69,21 @@ public class SempahoreExecutor implements ExecutorService {
             command.run();
             return null;
         });
+    }
+
+    private Void semaphoreAquireStrategy() throws InterruptedException {
+        semaphore.acquire();
+        return null;
+    }
+
+    private Void semaphoreTryAquireStrategy(Duration acquireTimeout) throws InterruptedException, TimeoutException {
+        boolean isAcquired = semaphore.tryAcquire(acquireTimeout.toNanos(), TimeUnit.NANOSECONDS);
+
+        if (!isAcquired) {
+            throw new TimeoutException(String.format("Task not aquired before the acquireTimeout %s", acquireTimeout));
+        }
+
+        return null;
     }
 
     @Override
@@ -123,5 +151,6 @@ public class SempahoreExecutor implements ExecutorService {
             throws InterruptedException, ExecutionException, TimeoutException {
         return delegate.invokeAny(toSemaphoreCallables(tasks), timeout, unit);
     }
+
 
 }
