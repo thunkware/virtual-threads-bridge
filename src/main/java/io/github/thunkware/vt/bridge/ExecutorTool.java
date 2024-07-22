@@ -73,16 +73,28 @@ public class ExecutorTool {
      *
      * @param permits number of sempahore permits
      * @return a new executor with limited concurrency
+     * @deprecated Because of typo in method name
      */
+    @Deprecated(forRemoval = true, since = "0.0.5")
     public static ExecutorService newSempahoreVirtualExecutor(int permits) {
+        return newSemaphoreVirtualExecutor(permits);
+    }
+
+    /**
+     * Creates an Executor that starts a new virtual Thread and limits concurrency to the number of semaphore permits
+     *
+     * @param permits number of semaphore permits
+     * @return a new executor with limited concurrency
+     */
+    public static ExecutorService newSemaphoreVirtualExecutor(int permits) {
         ExecutorService executor = getThreadProvider().newVirtualThreadPerTaskExecutor();
-        return new SempahoreExecutor(executor, permits);
+        return new SemaphoreExecutor(executor, permits);
     }
 
     /**
      * Creates an Executor that starts a new virtual Thread and limits concurrency
      * to the number of semaphore permits.
-     * 
+     *
      * <p>
      * When executing a task with the created ExecutorService if one permit is
      * available, the task is executed. If no permit is available, then the executor
@@ -99,11 +111,39 @@ public class ExecutorTool {
      * @param acquireTimeout time to wait for acquire a new task when no permit is
      *                       available
      * @return a new executor with limited concurrency
+     * @deprecated Because of typo in method name
      */
+    @Deprecated(forRemoval = true, since = "0.0.5")
     public static ExecutorService newSempahoreVirtualExecutor(int permits, Duration acquireTimeout) {
-        ExecutorService executor = getThreadProvider().newVirtualThreadPerTaskExecutor();
-        return new SempahoreExecutor(executor, permits, acquireTimeout);
+        return newSemaphoreVirtualExecutor(permits, acquireTimeout);
     }
+
+    /**
+     * Creates an Executor that starts a new virtual Thread and limits concurrency
+     * to the number of semaphore permits.
+     *
+     * <p>
+     * When executing a task with the created ExecutorService if one permit is
+     * available, the task is executed. If no permit is available, then the executor
+     * thread becomes disabled for thread scheduling purposes and lies dormant until
+     * one of three things happens:
+     * <ul>
+     * <li>a permit becomes available</li>
+     * <li>some other thread {@linkplain Thread#interrupt interrupts} the current
+     * thread; or</li>
+     * <li>the specified waiting time elapses, in which case a Timeout exception is thrown</li>
+     * </ul>
+     *
+     * @param permits        number of semaphore permits
+     * @param acquireTimeout time to wait for acquire a new task when no permit is
+     *                       available
+     * @return a new executor with limited concurrency
+     */
+    public static ExecutorService newSemaphoreVirtualExecutor(int permits, Duration acquireTimeout) {
+        ExecutorService executor = getThreadProvider().newVirtualThreadPerTaskExecutor();
+        return new SemaphoreExecutor(executor, permits, acquireTimeout);
+    }
+
 
     private ExecutorTool() {
         throw new AssertionError();

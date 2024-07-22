@@ -98,9 +98,9 @@ class ExecutorTool21Test {
     }
 
     @Test
-    void testNewSempahoreVirtualExecutorWithAquireTimeout() throws InterruptedException {
+    void testNewSemaphoreVirtualExecutorWithAquireTimeout() throws InterruptedException {
 
-        ExecutorService executor = ExecutorTool.newSempahoreVirtualExecutor(1, Duration.ofMillis(100));
+        ExecutorService executor = ExecutorTool.newSemaphoreVirtualExecutor(1, Duration.ofMillis(100));
         assertThat(executor.isShutdown()).isFalse();
         assertThat(executor.isTerminated()).isFalse();
         

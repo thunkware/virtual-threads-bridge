@@ -13,7 +13,7 @@ ExecutorService executor = ExecutorTool.hasVirtualThreads()
     : Executors.newCachedThreadPool();
 
 ExecutorService concurrencyLimitedExecutor = ExecutorTool.hasVirtualThreads()
-    ? ExecutorTool.newSempahoreVirtualExecutor(10)
+    ? ExecutorTool.newSemaphoreVirtualExecutor(10)
     : Executors.newFixedThreadPool(10);
 
 Thread thread = ThreadTool.hasVirtualThreads()
