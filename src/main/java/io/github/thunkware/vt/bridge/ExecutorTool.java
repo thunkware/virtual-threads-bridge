@@ -75,7 +75,7 @@ public class ExecutorTool {
      * @return a new executor with limited concurrency
      * @deprecated Because of typo in method name
      */
-    @Deprecated(forRemoval = true, since = "0.0.5")
+    @Deprecated
     public static ExecutorService newSempahoreVirtualExecutor(int permits) {
         return newSemaphoreVirtualExecutor(permits);
     }
@@ -113,7 +113,7 @@ public class ExecutorTool {
      * @return a new executor with limited concurrency
      * @deprecated Because of typo in method name
      */
-    @Deprecated(forRemoval = true, since = "0.0.5")
+    @Deprecated
     public static ExecutorService newSempahoreVirtualExecutor(int permits, Duration acquireTimeout) {
         return newSemaphoreVirtualExecutor(permits, acquireTimeout);
     }

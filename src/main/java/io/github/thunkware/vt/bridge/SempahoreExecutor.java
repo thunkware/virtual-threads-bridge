@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  *
  * @deprecated Because of a typo in class name
  */
-@Deprecated(forRemoval = true, since = "0.0.5")
+@Deprecated
 public class SempahoreExecutor extends SemaphoreExecutor {
 
 
