@@ -146,7 +146,7 @@ Add the library to maven pom.xml (or the equivalent in your build system):
 <dependency>
     <groupId>io.github.thunkware</groupId>
     <artifactId>virtual-threads-bridge</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 </dependency>
 ```
 
