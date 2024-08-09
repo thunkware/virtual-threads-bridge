@@ -5,13 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.Random;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.apache.commons.lang3.JavaVersion.JAVA_20;
 import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtMost;
@@ -21,6 +19,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 class ExecutorTool21Test {
+
+    private ExecutorService executorService;
+    private ExecutorService executor;
 
     @BeforeEach
     void setUp() {
@@ -32,26 +33,33 @@ class ExecutorTool21Test {
         assertThat(ExecutorTool.hasVirtualThreads()).isTrue();
 
         CountDownLatch latch = new CountDownLatch(1);
-        ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
+        executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
         executor.submit(() -> {
             assertThat(ThreadTool.isVirtual()).isTrue();
             latch.countDown();
         });
-        assertThatNoException().isThrownBy(() -> latch.await(1, TimeUnit.SECONDS));
+        verifyLatchZero(latch);
         assertThat(latch.getCount()).isZero();
     }
 
+    private static void verifyLatchZero(CountDownLatch latch) {
+        assertThatNoException().isThrownBy(() -> {
+            boolean reachedZero = latch.await(1, TimeUnit.SECONDS);
+            assertThat(reachedZero).isTrue();
+        });
+    }
+
     @Test
-    void testNewVirtualThreadPerTaskExecutorShutdownNow() {
+    void testNewVirtualThreadPerTaskExecutorShutdownNow() throws InterruptedException {
         assertThat(ExecutorTool.hasVirtualThreads()).isTrue();
 
         CountDownLatch latch = new CountDownLatch(1);
-        ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
+        executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
         assertThat(executor.isShutdown()).isFalse();
         assertThat(executor.isTerminated()).isFalse();
 
         executor.submit(() -> latch.await(60, TimeUnit.SECONDS));
-        assertThatNoException().isThrownBy(() -> latch.await(1, TimeUnit.SECONDS));
+        assertThat(latch.await(1, TimeUnit.SECONDS)).isFalse();
         assertThat(latch.getCount()).isOne();
 
         List<Runnable> tasks = executor.shutdownNow();
@@ -67,14 +75,14 @@ class ExecutorTool21Test {
         assertThat(ExecutorTool.hasVirtualThreads()).isTrue();
 
         CountDownLatch latch = new CountDownLatch(1);
-        ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
+        executor = ExecutorTool.newVirtualThreadPerTaskExecutor();
         assertThat(executor.isShutdown()).isFalse();
         assertThat(executor.isTerminated()).isFalse();
 
         executor.submit(() -> latch.await(3, TimeUnit.SECONDS));
 
         StopWatch stopWatch = StopWatch.createStarted();
-        executor.awaitTermination(4, TimeUnit.SECONDS);
+        assertThat(executor.awaitTermination(4, TimeUnit.SECONDS)).isFalse();
         stopWatch.stop();
 
         assertThat(stopWatch.getTime(TimeUnit.MILLISECONDS)).isBetween(2500L, 4500L);
@@ -82,7 +90,7 @@ class ExecutorTool21Test {
 
     @Test
     void testNewThreadPerTaskExecutor() throws InterruptedException {
-        ExecutorService executor = ExecutorTool.newThreadPerTaskExecutor(Thread::new);
+        executor = ExecutorTool.newThreadPerTaskExecutor(Thread::new);
 
         CountDownLatch latch = new CountDownLatch(1);
         assertThat(executor.isShutdown()).isFalse();
@@ -91,19 +99,67 @@ class ExecutorTool21Test {
         executor.submit(() -> latch.await(3, TimeUnit.SECONDS));
 
         StopWatch stopWatch = StopWatch.createStarted();
-        executor.awaitTermination(4, TimeUnit.SECONDS);
+        assertThat(executor.awaitTermination(4, TimeUnit.SECONDS)).isFalse();
         stopWatch.stop();
 
         assertThat(stopWatch.getTime(TimeUnit.MILLISECONDS)).isBetween(2500L, 4500L);
     }
 
     @Test
-    void testNewSemaphoreVirtualExecutorWithAquireTimeout() throws InterruptedException {
-
-        ExecutorService executor = ExecutorTool.newSemaphoreVirtualExecutor(1, Duration.ofMillis(100));
+    void testNewSemaphoreVirtualExecutorRunnable() throws InterruptedException {
+        executor = ExecutorTool.newSemaphoreVirtualExecutor(2);
         assertThat(executor.isShutdown()).isFalse();
         assertThat(executor.isTerminated()).isFalse();
-        
+
+        Semaphore semaphore = new Semaphore(3);
+        AtomicInteger completedCount = new AtomicInteger();
+
+        List<Future<?>> futures = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            Runnable runnable = () -> {
+                try {
+                    semaphore.acquire();
+                    if (semaphore.availablePermits() < 1) {
+                        throw new IllegalStateException();
+                    }
+                    completedCount.incrementAndGet();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    semaphore.release();
+                }
+            };
+
+            Future<?> future;
+            if (random.nextBoolean()) {
+                // runnable
+                future = executor.submit(runnable);
+            } else {
+                // callable
+                future = executor.submit(() -> {
+                    runnable.run();
+                    return null;
+                });
+            }
+            futures.add(future);
+        }
+
+        for (Future<?> future : futures) {
+            assertThatNoException().isThrownBy(future::get);
+        }
+        assertThat(completedCount.get()).isEqualTo(100);
+        executor.shutdown();
+        assertThat(executor.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
+    }
+
+    @Test
+    void testNewSemaphoreVirtualExecutorWithAquireTimeout() throws InterruptedException {
+
+        executor = ExecutorTool.newSemaphoreVirtualExecutor(1, Duration.ofMillis(100));
+        assertThat(executor.isShutdown()).isFalse();
+        assertThat(executor.isTerminated()).isFalse();
+
         CountDownLatch firstTaskStartsExecutionLatch = new CountDownLatch(1);
         CountDownLatch waitingLatch = new CountDownLatch(1);
 
@@ -113,7 +169,7 @@ class ExecutorTool21Test {
         });
 
         // Before executing the second task, waits until the first task has been started
-        firstTaskStartsExecutionLatch.await(10, TimeUnit.SECONDS);
+        assertThat(firstTaskStartsExecutionLatch.await(10, TimeUnit.SECONDS)).isTrue();
         Future<Boolean> timeoutTask = executor.submit(() -> waitingLatch.await(10, TimeUnit.SECONDS));
 
         assertThatThrownBy(() -> timeoutTask.get(500, TimeUnit.MILLISECONDS)).isInstanceOf(ExecutionException.class)
@@ -121,7 +177,7 @@ class ExecutorTool21Test {
 
         waitingLatch.countDown();
         executor.shutdown();
-        executor.awaitTermination(10, TimeUnit.SECONDS);
+        assertThat(executor.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
     }
 
     @Test
@@ -138,8 +194,7 @@ class ExecutorTool21Test {
         try {
             verifyThreadNamePrefix(executor);
         } finally {
-            ThreadTool.getConfig().setThreadCustomizer(thread -> {
-            });
+            ThreadTool.getConfig().setThreadCustomizer(thread -> {});
         }
     }
 
@@ -158,6 +213,6 @@ class ExecutorTool21Test {
             latch.countDown();
         });
         assertThatNoException().isThrownBy(() -> future2.get(1, TimeUnit.SECONDS));
-        assertThatNoException().isThrownBy(() -> latch.await(1, TimeUnit.SECONDS));
+        verifyLatchZero(latch);
     }
 }

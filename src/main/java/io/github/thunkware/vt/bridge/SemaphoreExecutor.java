@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 
 /**
  * Executor that limits concurrency to a number of semaphore permits
+ *
  * @since 0.05
  */
 public class SemaphoreExecutor implements ExecutorService {
 
     private final ExecutorService delegate;
     private final Semaphore semaphore;
-    private final Callable<Void> aquireStrategy;
+    private final SemaphoreAquireStrategy aquireStrategy;
 
     public SemaphoreExecutor(ExecutorService delegate, int permits) {
         this(delegate, new Semaphore(permits, true));
@@ -23,7 +24,7 @@ public class SemaphoreExecutor implements ExecutorService {
     public SemaphoreExecutor(ExecutorService delegate, Semaphore semaphore) {
         this.delegate = delegate;
         this.semaphore = semaphore;
-        this.aquireStrategy = this::semaphoreAquireStrategy;
+        this.aquireStrategy = semaphore::acquire;
     }
 
     public SemaphoreExecutor(ExecutorService delegate, int permits, Duration acquireTimeout) {
@@ -44,13 +45,7 @@ public class SemaphoreExecutor implements ExecutorService {
 
     private <T> Callable<T> toSemaphoreCallable(Callable<T> callable) {
         return () -> {
-            try {
-                aquireStrategy.call();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException();
-            }
-
+            aquireStrategy.call();
             try {
                 return callable.call();
             } finally {
@@ -60,25 +55,22 @@ public class SemaphoreExecutor implements ExecutorService {
     }
 
     private Runnable toSemaphoreRunnable(Runnable command) {
-        return () -> toSemaphoreCallable(() -> {
-            command.run();
-            return null;
-        });
+        return () -> {
+            aquireStrategy.call();
+            try {
+                command.run();
+            } finally {
+                semaphore.release();
+            }
+        };
     }
 
-    private Void semaphoreAquireStrategy() throws InterruptedException {
-        semaphore.acquire();
-        return null;
-    }
-
-    private Void semaphoreTryAquireStrategy(Duration acquireTimeout) throws InterruptedException, TimeoutException {
+    private void semaphoreTryAquireStrategy(Duration acquireTimeout) throws InterruptedException, TimeoutException {
         boolean isAcquired = semaphore.tryAcquire(acquireTimeout.toNanos(), TimeUnit.NANOSECONDS);
 
         if (!isAcquired) {
             throw new TimeoutException(String.format("Permit not acquired before the acquireTimeout %s", acquireTimeout));
         }
-
-        return null;
     }
 
     @Override
@@ -145,6 +137,22 @@ public class SemaphoreExecutor implements ExecutorService {
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
             throws InterruptedException, ExecutionException, TimeoutException {
         return delegate.invokeAny(toSemaphoreCallables(tasks), timeout, unit);
+    }
+
+    @FunctionalInterface
+    private interface SemaphoreAquireStrategy {
+        void acquire() throws InterruptedException, TimeoutException;
+
+        default void call() {
+            try {
+                acquire();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException();
+            } catch (TimeoutException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 
 }
