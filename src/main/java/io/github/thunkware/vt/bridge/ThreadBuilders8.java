@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * Defines static methods to create platform and virtual thread builders.
  */
 class ThreadBuilders8 {
+
     private ThreadBuilders8() { }
 
     /**
@@ -227,7 +228,7 @@ class ThreadBuilders8 {
         private final UncaughtExceptionHandler uhe;
 
         private final boolean hasCounter;
-        private AtomicLong count = new AtomicLong();
+        private final AtomicLong count = new AtomicLong();
 
         BaseThreadFactory(String name,
                           long start,
@@ -259,6 +260,7 @@ class ThreadBuilders8 {
      * ThreadFactory for platform threads.
      */
     private static class PlatformThreadFactory extends BaseThreadFactory {
+
         private final ThreadGroup group;
         private final boolean daemonChanged;
         private final boolean daemon;

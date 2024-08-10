@@ -15,7 +15,7 @@ public class SemaphoreExecutor implements ExecutorService {
 
     private final ExecutorService delegate;
     private final Semaphore semaphore;
-    private final SemaphoreAquireStrategy aquireStrategy;
+    private final SemaphoreAcquireStrategy acquireStrategy;
 
     public SemaphoreExecutor(ExecutorService delegate, int permits) {
         this(delegate, new Semaphore(permits, true));
@@ -24,7 +24,7 @@ public class SemaphoreExecutor implements ExecutorService {
     public SemaphoreExecutor(ExecutorService delegate, Semaphore semaphore) {
         this.delegate = delegate;
         this.semaphore = semaphore;
-        this.aquireStrategy = semaphore::acquire;
+        this.acquireStrategy = semaphore::acquire;
     }
 
     public SemaphoreExecutor(ExecutorService delegate, int permits, Duration acquireTimeout) {
@@ -34,7 +34,7 @@ public class SemaphoreExecutor implements ExecutorService {
     public SemaphoreExecutor(ExecutorService delegate, Semaphore semaphore, Duration acquireTimeout) {
         this.delegate = delegate;
         this.semaphore = semaphore;
-        this.aquireStrategy = () -> this.semaphoreTryAquireStrategy(acquireTimeout);
+        this.acquireStrategy = () -> this.acquireSempahoreWithTimeout(acquireTimeout);
     }
 
     private <T> List<Callable<T>> toSemaphoreCallables(Collection<? extends Callable<T>> callables) {
@@ -45,7 +45,7 @@ public class SemaphoreExecutor implements ExecutorService {
 
     private <T> Callable<T> toSemaphoreCallable(Callable<T> callable) {
         return () -> {
-            aquireStrategy.call();
+            acquireStrategy.call();
             try {
                 return callable.call();
             } finally {
@@ -56,7 +56,7 @@ public class SemaphoreExecutor implements ExecutorService {
 
     private Runnable toSemaphoreRunnable(Runnable command) {
         return () -> {
-            aquireStrategy.call();
+            acquireStrategy.call();
             try {
                 command.run();
             } finally {
@@ -65,7 +65,7 @@ public class SemaphoreExecutor implements ExecutorService {
         };
     }
 
-    private void semaphoreTryAquireStrategy(Duration acquireTimeout) throws InterruptedException, TimeoutException {
+    private void acquireSempahoreWithTimeout(Duration acquireTimeout) throws InterruptedException, TimeoutException {
         boolean isAcquired = semaphore.tryAcquire(acquireTimeout.toNanos(), TimeUnit.NANOSECONDS);
 
         if (!isAcquired) {
@@ -140,7 +140,7 @@ public class SemaphoreExecutor implements ExecutorService {
     }
 
     @FunctionalInterface
-    private interface SemaphoreAquireStrategy {
+    private interface SemaphoreAcquireStrategy {
         void acquire() throws InterruptedException, TimeoutException;
 
         default void call() {

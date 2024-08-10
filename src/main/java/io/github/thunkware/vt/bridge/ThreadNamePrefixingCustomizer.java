@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 class ThreadNamePrefixingCustomizer implements ThreadCustomizer {
 
     private final AtomicInteger counter = new AtomicInteger();
-    private String prefix;
+    private final String prefix;
 
     public ThreadNamePrefixingCustomizer(String prefix) {
         this.prefix = Objects.requireNonNull(prefix, "prefix is required");

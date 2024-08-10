@@ -3,6 +3,7 @@ package io.github.thunkware.vt.bridge;
 import java.lang.reflect.Constructor;
 
 class ThreadProviderFactory {
+
     private static final Boolean isJava21 = isJava21();
     private static ThreadProvider threadProvider;
 

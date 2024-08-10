@@ -7,10 +7,12 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 
 class ThreadBuilders21 {
+
     private ThreadBuilders21() {
     }
 
     static final class PlatformThreadBuilder implements OfPlatform {
+
         private final java.lang.Thread.Builder.OfPlatform delegate = Thread.ofPlatform();
 
         @Override
@@ -85,6 +87,7 @@ class ThreadBuilders21 {
     }
 
     static final class VirtualThreadBuilder implements OfVirtual {
+
         private final java.lang.Thread.Builder.OfVirtual delegate = Thread.ofVirtual();
 
         @Override
@@ -125,7 +128,6 @@ class ThreadBuilders21 {
             delegate.uncaughtExceptionHandler(ueh);
             return this;
         }
-
     }
 
 }
