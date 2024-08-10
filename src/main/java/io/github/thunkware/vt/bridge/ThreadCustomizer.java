@@ -29,7 +29,7 @@ public interface ThreadCustomizer {
      * @param prefix
      * @return ThreadCustomizer
      */
-    public static ThreadCustomizer withNamePrefix(String prefix) {
+    static ThreadCustomizer withNamePrefix(String prefix) {
         return new ThreadNamePrefixingCustomizer(prefix);
     }
 }
