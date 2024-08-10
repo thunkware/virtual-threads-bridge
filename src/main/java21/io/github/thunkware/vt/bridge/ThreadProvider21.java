@@ -22,7 +22,7 @@ final class ThreadProvider21 implements ThreadProvider {
     }
 
     @Override
-    public final boolean isVirtual(final Thread thread) {
+    public boolean isVirtual(final Thread thread) {
         return thread.isVirtual();
     }
 
