@@ -12,6 +12,7 @@ import static io.github.thunkware.vt.bridge.ThreadProviderFactory.isJava21;
 public class ThreadProviderConfig {
 
     private final Map<ThreadFeature, CompatibilityPolicy> policies = new EnumMap<>(ThreadFeature.class);
+
     private ThreadCustomizer threadCustomizer = thread -> {
         // no op
     };
