@@ -14,11 +14,11 @@ public class ThreadNameCallable<V> implements Callable<V> {
 
     public ThreadNameCallable(String threadName, Callable<V> callable) {
         if (threadName == null) {
-            throw new NullPointerException("name cannot be null");
+            throw new IllegalArgumentException("name cannot be null");
         }
 
         if (callable == null) {
-            throw new NullPointerException("callable cannot be null");
+            throw new IllegalArgumentException("callable cannot be null");
         }
 
         this.threadName = threadName;

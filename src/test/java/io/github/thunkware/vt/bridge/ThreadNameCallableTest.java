@@ -39,13 +39,13 @@ public class ThreadNameCallableTest {
 
     @Test
     public void testInvalidArguments() {
-        assertThatExceptionOfType(NullPointerException.class)
+        assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new ThreadNameCallable<Void>("test", null));
 
-        assertThatExceptionOfType(NullPointerException.class)
+        assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new ThreadNameCallable<>(null, () -> "string"));
 
-        assertThatExceptionOfType(NullPointerException.class)
+        assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new ThreadNameCallable<Void>(null, null));
     }
 }
