@@ -1,7 +1,7 @@
 package io.github.thunkware.vt.bridge;
 
 /**
- * Class to implement a NamedRunnable that sets
+ * Convenience runnable wrapper that sets
  * the thread name, executes the Runnable, then
  * resets the thread name
  */

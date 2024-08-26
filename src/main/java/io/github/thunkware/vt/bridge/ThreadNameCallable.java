@@ -3,7 +3,7 @@ package io.github.thunkware.vt.bridge;
 import java.util.concurrent.Callable;
 
 /**
- * Class to implement a NamedCallable that sets
+ * Convenience callable wrapper that sets
  * the thread name, executes the Callable, then
  * resets the thread name
  */
@@ -12,6 +12,12 @@ public class ThreadNameCallable<V> implements Callable<V> {
     private final String threadName;
     private final Callable<V> callable;
 
+    /**
+     * Constructor
+     *
+     * @param threadName the thread name
+     * @param callable the Callable
+     */
     public ThreadNameCallable(String threadName, Callable<V> callable) {
         if (threadName == null) {
             throw new IllegalArgumentException("threadName cannot be null");
