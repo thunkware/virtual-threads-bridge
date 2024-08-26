@@ -18,7 +18,7 @@ public class ThreadNameRunnable implements Runnable {
      */
     public ThreadNameRunnable(String threadName, Runnable task) {
         if (threadName == null) {
-            throw new IllegalArgumentException("name cannot be null");
+            throw new IllegalArgumentException("threadName cannot be null");
         }
 
         if (task == null) {

@@ -14,7 +14,7 @@ public class ThreadNameCallable<V> implements Callable<V> {
 
     public ThreadNameCallable(String threadName, Callable<V> callable) {
         if (threadName == null) {
-            throw new IllegalArgumentException("name cannot be null");
+            throw new IllegalArgumentException("threadName cannot be null");
         }
 
         if (callable == null) {
