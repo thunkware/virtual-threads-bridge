@@ -4,7 +4,7 @@
 
     <groupId>io.github.thunkware</groupId>
     <artifactId>virtual-threads-bridge</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7</version>
     <packaging>jar</packaging>
     <name>virtual-threads-bridge</name>
 
@@ -56,7 +56,7 @@
         <connection>scm:git:git://github.com/thunkware/virtual-threads-bridge.git</connection>
         <developerConnection>scm:git:https://github.com/thunkware/virtual-threads-bridge.git</developerConnection>
         <url>http://github.com/thunkware/virtual-threads-bridge/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>virtual-threads-bridge-0.0.7</tag>
     </scm>
 
     <developers>
