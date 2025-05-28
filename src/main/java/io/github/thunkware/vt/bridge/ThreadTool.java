@@ -32,6 +32,16 @@ public class ThreadTool {
     }
 
     /**
+     * On Java 8+, returns false
+     * On Java 24+, returns true
+     *
+     * @return true if the JVM supports virtual threads that can synchronize without pinning
+     */
+    public static boolean hasSafeVirtualThreads() {
+        return getThreadProvider().hasSafeVirtualThreads();
+    }
+
+    /**
      * Returns {@code true} if the thread is a virtual thread. A virtual thread
      * is scheduled by the Java virtual machine rather than the operating system.
      *

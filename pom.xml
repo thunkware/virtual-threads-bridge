@@ -12,7 +12,7 @@
         Bridges Java21 Virtual Threads API to Java8+
     </description>
     <url>https://github.com/thunkware/virtual-threads-bridge</url>
-    <inceptionYear>2023</inceptionYear>
+    <inceptionYear>2025</inceptionYear>
     <organization>
         <name>thunkware</name>
     </organization>
@@ -23,7 +23,7 @@
         <!-- Plugin configuration -->
         <git-commit-id-plugin.version>4.0.3</git-commit-id-plugin.version>
         <gpg.skip>true</gpg.skip>
-        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z</maven.build.timestamp.format>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
@@ -40,7 +40,7 @@
 
         <!-- Dependency versions -->
         <assertj-core.version>3.19.0</assertj-core.version>
-        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
     </properties>
 
     <licenses>
@@ -327,7 +327,7 @@
         <profile>
             <id>java21</id>
             <activation>
-                <jdk>21</jdk>
+                <jdk>[21,)</jdk>
             </activation>
 
             <build>
