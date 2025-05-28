@@ -70,7 +70,7 @@ The following Java21 APIs are bridged:
     Thread.isVirtual()</a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.8/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L41">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.9/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L41">
     ThreadTool.isVirtual(Thread)</a>
     </td>
   </tr>
@@ -81,7 +81,7 @@ The following Java21 APIs are bridged:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.8/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L83">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.9/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L83">
     ThreadTool.ofPlatform()
     </a>
     </td>
@@ -93,7 +93,7 @@ The following Java21 APIs are bridged:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.8/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L95">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.9/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L95">
     ThreadTool.ofVirtual()
     </a>
     </td>
@@ -105,7 +105,7 @@ The following Java21 APIs are bridged:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.8/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L62">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.9/src/main/java/io/github/thunkware/vt/bridge/ThreadTool.java#L62">
     ThreadTool.startVirtualThread(Runnable)
     </a>
     </td>
@@ -117,7 +117,7 @@ The following Java21 APIs are bridged:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.8/src/main/java/io/github/thunkware/vt/bridge/ExecutorTool.java#L37">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.9/src/main/java/io/github/thunkware/vt/bridge/ExecutorTool.java#L37">
     ExecutorTool.newThreadPerTaskExecutor(ThreadFactory)
     </a>
     </td>
@@ -129,7 +129,7 @@ The following Java21 APIs are bridged:
     </a>
     </td>
     <td>
-    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.8/src/main/java/io/github/thunkware/vt/bridge/ExecutorTool.java#L51">
+    <a href="https://github.com/thunkware/virtual-threads-bridge/blob/virtual-threads-bridge-0.0.9/src/main/java/io/github/thunkware/vt/bridge/ExecutorTool.java#L51">
     ExecutorTool.newVirtualThreadPerTaskExecutor()
     </a>
     </td>
@@ -146,7 +146,7 @@ Add the library to maven pom.xml (or the equivalent in your build system):
 <dependency>
     <groupId>io.github.thunkware</groupId>
     <artifactId>virtual-threads-bridge</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
 </dependency>
 ```
 
