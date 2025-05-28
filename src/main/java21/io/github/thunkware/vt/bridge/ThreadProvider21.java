@@ -22,6 +22,11 @@ final class ThreadProvider21 implements ThreadProvider {
     }
 
     @Override
+    public boolean hasSafeVirtualThreads() {
+        return ThreadProviderFactory.isJava24();
+    }
+
+    @Override
     public boolean isVirtual(final Thread thread) {
         return thread.isVirtual();
     }

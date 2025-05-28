@@ -6,6 +6,7 @@ package io.github.thunkware.vt.bridge;
  */
 public enum ThreadFeature {
     HAS_VIRTUAL_THREADS,
+    HAS_SAFE_VIRTUAL_THREADS,
     IS_VIRTUAL,
     START_VIRTUAL_THREAD,
     UNSTARTED_VIRTUAL_THREAD,

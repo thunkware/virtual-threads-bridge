@@ -1,5 +1,7 @@
 package io.github.thunkware.vt.bridge;
 
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -76,5 +78,13 @@ class ThreadTool21Test {
         assertThat(thread.isDaemon()).isTrue();
         assertThat(thread.getName()).isEqualTo("foo");
         assertThat(ThreadTool.isVirtual(thread)).isTrue();
+    }
+
+    @Test
+    void testHasSafeVirtualThreads() {
+        final int javaSpecificationVersion = Integer.parseInt(SystemUtils.JAVA_SPECIFICATION_VERSION);
+        assumeThat(javaSpecificationVersion).isGreaterThanOrEqualTo(24);
+
+        assertThat(ThreadTool.hasSafeVirtualThreads()).isTrue();
     }
 }

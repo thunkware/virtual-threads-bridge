@@ -1,10 +1,12 @@
 package io.github.thunkware.vt.bridge;
 
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 
 class ThreadProviderFactory {
 
     private static final Boolean isJava21 = isJava21();
+    private static final Boolean isJava24 = isJava24();
     private static ThreadProvider threadProvider;
 
     // to avoid ugly ExceptionInInitializerError on error, init in a method, not static initializer
@@ -25,6 +27,18 @@ class ThreadProviderFactory {
             Class.forName("java.lang.Thread$Builder$OfPlatform");
             return true;
         } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    static boolean isJava24() {
+        if (isJava24 != null) {
+            return isJava24;
+        }
+        try {
+            Reader.class.getMethod("of", CharSequence.class);
+            return true;
+        } catch (NoSuchMethodException e) {
             return false;
         }
     }

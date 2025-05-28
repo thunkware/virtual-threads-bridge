@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import static io.github.thunkware.vt.bridge.ThreadFeature.HAS_SAFE_VIRTUAL_THREADS;
 import static io.github.thunkware.vt.bridge.ThreadFeature.HAS_VIRTUAL_THREADS;
 import static io.github.thunkware.vt.bridge.ThreadFeature.IS_VIRTUAL;
 import static io.github.thunkware.vt.bridge.ThreadFeature.NEW_THREAD_PER_TASK_EXECUTOR;
@@ -33,6 +34,12 @@ final class ThreadProvider8 implements ThreadProvider {
     @Override
     public boolean hasVirtualThreads() {
         config.enforceCompatibilityPolicy(HAS_VIRTUAL_THREADS);
+        return false;
+    }
+
+    @Override
+    public boolean hasSafeVirtualThreads() {
+        config.enforceCompatibilityPolicy(HAS_SAFE_VIRTUAL_THREADS);
         return false;
     }
 
