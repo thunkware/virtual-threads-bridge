@@ -10,8 +10,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.apache.commons.lang3.JavaVersion.JAVA_20;
 import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtMost;
@@ -137,6 +139,22 @@ class ExecutorTool8Test {
         } finally {
             ThreadTool.getConfig().setThreadCustomizer(thread -> {
             });
+        }
+    }
+
+    @Test
+    void testNewVirtualThreadPerTaskExecutorThreadFactory() {
+        AtomicInteger counter = new AtomicInteger();
+        ThreadFactory threadFactory = runnable -> {
+            Thread thread = new Thread(runnable);
+            thread.setName("my-thread-" + counter.getAndIncrement());
+            return thread;
+        };
+        ExecutorService executor = ExecutorTool.newVirtualThreadPerTaskExecutor(threadFactory);
+        try {
+            verifyThreadNamePrefix(executor);
+        } finally {
+            executor.shutdown();
         }
     }
 
