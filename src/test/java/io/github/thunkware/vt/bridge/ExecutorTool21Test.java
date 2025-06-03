@@ -198,6 +198,22 @@ class ExecutorTool21Test {
         }
     }
 
+    @Test
+    void testNewVirtualThreadPerTaskExecutorThreadFactory() {
+        AtomicInteger counter = new AtomicInteger();
+        ThreadFactory threadFactory = runnable -> {
+            Thread thread = new Thread(runnable);
+            thread.setName("my-thread-" + counter.getAndIncrement());
+            return thread;
+        };
+        executor = ExecutorTool.newVirtualThreadPerTaskExecutor(threadFactory);
+        try {
+            verifyThreadNamePrefix(executor);
+        } finally {
+            executor.shutdown();
+        }
+    }
+
     private void verifyThreadNamePrefix(ExecutorService executor) {
         CountDownLatch latch = new CountDownLatch(2);
         Future<?> future1 = executor.submit(() -> {

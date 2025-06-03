@@ -80,10 +80,11 @@ final class ThreadProvider8 implements ThreadProvider {
     }
 
     @Override
-    public ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer) {
+    public ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer, ThreadFactory threadFactory) {
         config.enforceCompatibilityPolicy(NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR);
 
-        return newThreadPerTaskExecutor(threadCustomizer.asThreadFactory(this::unstartedVirtualThread));
+        ThreadFactory actualFactory = threadFactory == null ? this::unstartedVirtualThread : threadFactory;
+        return newThreadPerTaskExecutor(threadCustomizer.asThreadFactory(actualFactory));
     }
 
     @Override

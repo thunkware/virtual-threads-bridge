@@ -1,6 +1,7 @@
 package io.github.thunkware.vt.bridge;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
@@ -71,7 +72,7 @@ public class ExecutorTool {
     }
 
     /**
-     * Creates an Executor that starts a new virtual Thread on Java 21 + (or new platform thread on Java 8+) for each task.
+     * Creates an Executor that starts a new virtual Thread on Java 21+ (or new platform thread on Java 8+) for each task.
      * The number of threads created by the Executor is unbounded.
      *
      * <p> This method is equivalent to invoking
@@ -85,7 +86,7 @@ public class ExecutorTool {
     }
 
     /**
-     * Creates an Executor that starts a new virtual Thread on Java 21 + (or new platform thread on Java 8+) for each task.
+     * Creates an Executor that starts a new virtual Thread on Java 21+ (or new platform thread on Java 8+) for each task.
      * The number of threads created by the Executor is unbounded.
      *
      * <p> This method is equivalent to invoking
@@ -96,7 +97,20 @@ public class ExecutorTool {
      * @return a new executor that creates a new virtual Thread for each task
      */
     public static ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer) {
-        return getThreadProvider().newVirtualThreadPerTaskExecutor(threadCustomizer);
+        return getThreadProvider().newVirtualThreadPerTaskExecutor(threadCustomizer, null);
+    }
+
+    /**
+     * Creates an Executor that starts a new virtual Thread on Java 21+ (or new platform thread on Java 8+) for each task.
+     * The number of threads created by the Executor is unbounded.
+     *
+     * @param threadFactory threadFactory to supply thread name, UncaughtExceptionHandler and ContextClassLoader.
+     * @return a new executor that creates a new virtual Thread for each task
+     */
+    public static ExecutorService newVirtualThreadPerTaskExecutor(ThreadFactory threadFactory) {
+        Objects.requireNonNull(threadFactory);
+        ThreadCustomizer threadCustomizer = thread -> {};
+        return getThreadProvider().newVirtualThreadPerTaskExecutor(threadCustomizer, threadFactory);
     }
 
     /**

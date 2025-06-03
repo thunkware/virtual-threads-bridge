@@ -111,10 +111,11 @@ public interface ThreadProvider {
      * that creates virtual threads.
      *
      * @param threadCustomizer ThreadCustomizer to customize new unstarted threads
+     * @param threadFactory ThreadFactory. can be null
      * @return a new executor that creates a new virtual Thread for each task
      */
     @ConfigFeature(feature = NEW_VIRTUAL_THREAD_PER_TASK_EXECUTOR)
-    ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer);
+    ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer, ThreadFactory threadFactory);
 
     /**
      * Returns a builder for creating a platform {@code Thread} or {@code ThreadFactory}

@@ -40,11 +40,17 @@ final class ThreadProvider21 implements ThreadProvider {
 
     @Override
     public Thread unstartedVirtualThread(Runnable task) {
-        return unstartedVirtualThread(task, config.getThreadCustomizer());
+        return unstartedVirtualThread(task, config.getThreadCustomizer(), null);
     }
 
-    private Thread unstartedVirtualThread(Runnable task, ThreadCustomizer threadCustomizer) {
+    private Thread unstartedVirtualThread(Runnable task, ThreadCustomizer threadCustomizer, ThreadFactory threadFactory) {
         Thread thread = Thread.ofVirtual().unstarted(task);
+        if (threadFactory != null) {
+            Thread sample = threadFactory.newThread(task);
+            thread.setName(sample.getName());
+            thread.setUncaughtExceptionHandler(sample.getUncaughtExceptionHandler());
+            thread.setContextClassLoader(sample.getContextClassLoader());
+        }
         threadCustomizer.customize(thread);
         return thread;
     }
@@ -61,8 +67,8 @@ final class ThreadProvider21 implements ThreadProvider {
     }
 
     @Override
-    public ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer) {
-        return newThreadPerTaskExecutor(runnable -> unstartedVirtualThread(runnable, threadCustomizer));
+    public ExecutorService newVirtualThreadPerTaskExecutor(ThreadCustomizer threadCustomizer, ThreadFactory threadFactory) {
+        return newThreadPerTaskExecutor(runnable -> unstartedVirtualThread(runnable, threadCustomizer, threadFactory));
     }
 
     @Override
