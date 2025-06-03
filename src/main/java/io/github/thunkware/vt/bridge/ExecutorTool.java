@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Supplier;
 
 import static io.github.thunkware.vt.bridge.ThreadProviderFactory.getThreadProvider;
 
@@ -19,7 +20,37 @@ public class ExecutorTool {
      * @return true if the JVM supports virtual threads
      */
     public static boolean hasVirtualThreads() {
-        return getThreadProvider().hasVirtualThreads();
+        return ThreadTool.hasVirtualThreads();
+    }
+
+    /**
+     * On Java 8+, returns false
+     * On Java 24+, returns true
+     *
+     * @return true if the JVM supports virtual threads that can synchronize without pinning
+     */
+    public static boolean hasSafeVirtualThreads() {
+        return ThreadTool.hasSafeVirtualThreads();
+    }
+
+    /**
+     * Creates a builder conditional on {@link #hasVirtualThreads}
+     * @param positiveSupplier supplier to be invoked if {@link #hasVirtualThreads()} is true
+     * @return ConditionalBuilder
+     * @param <T> any
+     */
+    public static <T> ConditionalBuilder<T> ifVirtualThreads(Supplier<T> positiveSupplier) {
+        return ThreadTool.ifVirtualThreads(positiveSupplier);
+    }
+
+    /**
+     * Creates a builder conditional on {@link #hasSafeVirtualThreads}
+     * @param positiveSupplier supplier to be invoked if {@link #hasSafeVirtualThreads()} is true
+     * @return ConditionalBuilder
+     * @param <T> any
+     */
+    public static <T> ConditionalBuilder<T> ifSafeVirtualThreads(Supplier<T> positiveSupplier) {
+        return ThreadTool.ifSafeVirtualThreads(positiveSupplier);
     }
 
     /**
