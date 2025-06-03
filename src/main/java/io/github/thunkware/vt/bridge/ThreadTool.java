@@ -3,6 +3,7 @@ package io.github.thunkware.vt.bridge;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 import static io.github.thunkware.vt.bridge.ThreadFeature.INHERIT_INHERITABLE_THREAD_LOCALS;
 import static io.github.thunkware.vt.bridge.ThreadProvider.getThreadProvider;
@@ -39,6 +40,28 @@ public class ThreadTool {
      */
     public static boolean hasSafeVirtualThreads() {
         return getThreadProvider().hasSafeVirtualThreads();
+    }
+
+    /**
+     * Creates a builder conditional on {@link #hasVirtualThreads}
+     * @param positiveSupplier supplier to be invoked if {@link #hasVirtualThreads()} is true
+     * @return ConditionalBuilder
+     * @param <T> any
+     */
+    public static <T> ConditionalBuilder<T> ifVirtualThreads(Supplier<T> positiveSupplier) {
+        return ConditionalBuilder.<T>conditionalOn(hasVirtualThreads())
+                .ifTrue(positiveSupplier);
+    }
+
+    /**
+     * Creates a builder conditional on {@link #hasSafeVirtualThreads}
+     * @param positiveSupplier supplier to be invoked if {@link #hasSafeVirtualThreads()} is true
+     * @return ConditionalBuilder
+     * @param <T> any
+     */
+    public static <T> ConditionalBuilder<T> ifSafeVirtualThreads(Supplier<T> positiveSupplier) {
+        return ConditionalBuilder.<T>conditionalOn(hasSafeVirtualThreads())
+                                 .ifTrue(positiveSupplier);
     }
 
     /**

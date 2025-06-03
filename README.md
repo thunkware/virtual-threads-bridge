@@ -20,6 +20,16 @@ Thread thread = ThreadTool.hasVirtualThreads()
     ? ThreadTool.unstartedVirtualThread(myRunnable)
     : new Thread(myRunnable);
 ```
+
+If you prefer a more fluent api, you can write:
+```java
+ExecutorService executor = ExecutorTool.ifVirtualThreads(ExecutorTool::newVirtualThreadPerTaskExecutor)
+        .orElseGet(Executors::newCachedThreadPool);
+
+Thread thread = ThreadTool.ifVirtualThreads(() -> ThreadTool.unstartedVirtualThread(myRunnable))
+        .orElseGet(() -> new Thread(myRunnable));
+```
+
 <br>
 Of course, it's dangerous to blindly create excessive number of (platform) threads in  Java8+/preJava21 without checking if virtual threads are available:
 

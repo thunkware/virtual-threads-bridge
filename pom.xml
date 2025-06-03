@@ -25,22 +25,24 @@
         <gpg.skip>true</gpg.skip>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z</maven.build.timestamp.format>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.2.2</maven-failsafe-plugin.version>
+        <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+        <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+        <surefire-failsafe-option>-Dfoo=bar</surefire-failsafe-option>
 
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
 
         <!-- Dependency versions -->
         <assertj-core.version>3.19.0</assertj-core.version>
         <commons-lang3.version>3.17.0</commons-lang3.version>
+        <mockito.version>4.11.0</mockito.version>
     </properties>
 
     <licenses>
@@ -99,6 +101,20 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -143,7 +159,7 @@
                 <configuration>
                     <workingDirectory>${project.build.directory}</workingDirectory>
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
-                    <argLine>-Xmx1024m -Xms128m ${argLine}</argLine>
+                    <argLine>-Xmx1024m -Xms128m ${surefire-failsafe-option} @{argLine}</argLine>
                     <runOrder>alphabetical</runOrder>
                 </configuration>
                 <executions>
@@ -163,7 +179,7 @@
                 <configuration>
                     <workingDirectory>${project.build.directory}</workingDirectory>
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
-                    <argLine>-Xmx1024m -Xms128m ${argLine}</argLine>
+                    <argLine>-Xmx1024m -Xms128m ${surefire-failsafe-option} @{argLine}</argLine>
                     <runOrder>alphabetical</runOrder>
                     <!-- https://issues.apache.org/jira/browse/SUREFIRE-1731 -->
                     <!-- Unable to test Multi Release Jar with surefire or failsafe -->
@@ -307,6 +323,11 @@
             <activation>
                 <jdk>[21,)</jdk>
             </activation>
+
+            <properties>
+                <surefire-failsafe-option>-XX:+EnableDynamicAgentLoading</surefire-failsafe-option>
+            </properties>
+
 
             <build>
                 <plugins>
