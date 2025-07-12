@@ -41,7 +41,7 @@
 
         <!-- Dependency versions -->
         <assertj-core.version>3.19.0</assertj-core.version>
-        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <mockito.version>4.11.0</mockito.version>
     </properties>
 
